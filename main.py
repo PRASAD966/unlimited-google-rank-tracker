@@ -43,12 +43,17 @@ def create_driver():
     return driver
 
 # ---------- FIND RANK ----------
-def find_keyword_rank(driver, keyword, domain):
+def find_keyword_rank(driver, keyword, domain, location):
     rank, page_found = None, None
 
     for page in range(MAX_PAGES):
+        # Skip after 10 pages
+        if page >= 10:
+            print(f"⚠️ Skipping '{keyword}' after 10 pages (not found)")
+            break
+
         start = page * 10
-        search_url = f"https://www.google.com/search?q={keyword}&hl=en&gl=in&start={start}"
+        search_url = f"https://www.google.com/search?q={keyword}&hl=en&gl={location}&start={start}"
         driver.get(search_url)
         time.sleep(random.uniform(*DELAY_RANGE))
 
@@ -121,6 +126,9 @@ def main():
     website = input("Enter your website URL (e.g. https://example.com): ").strip()
     domain = website.replace("https://", "").replace("http://", "").replace("www.", "").strip("/")
 
+    # ✅ Location input added
+    location = input("Enter search location (e.g., 'in' for India, 'us' for USA): ").strip().lower() or "in"
+
     keywords_file = input("Enter path to keywords.txt file: ").strip()
     if not os.path.exists(keywords_file):
         exit("❌ File not found.")
@@ -128,7 +136,7 @@ def main():
     with open(keywords_file, "r", encoding="utf-8") as f:
         keywords = [k.strip() for k in f if k.strip()]
 
-    print(f"\n📂 Loaded {len(keywords)} keywords for domain '{domain}'")
+    print(f"\n📂 Loaded {len(keywords)} keywords for domain '{domain}' ({location.upper()})")
     print("ℹ️ Browser will open — please don’t close it during the search.\n")
 
     driver = create_driver()
@@ -137,11 +145,11 @@ def main():
     try:
         for i, kw in enumerate(keywords, 1):
             print(f"[{i}/{len(keywords)}] Searching: '{kw}' ...")
-            rank, page_num = find_keyword_rank(driver, kw, domain)
+            rank, page_num = find_keyword_rank(driver, kw, domain, location)
             if rank:
                 print(f" → Found on page {page_num} at position #{rank}")
             else:
-                print(f" ❌ Not found in top {MAX_PAGES*10} results.")
+                print(f" ❌ Not found within 50 pages. Skipped '{kw}'.")
             results.append((kw, page_num, rank))
     finally:
         driver.quit()
