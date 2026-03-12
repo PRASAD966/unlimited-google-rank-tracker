@@ -1,0 +1,27 @@
+services:
+  app:
+    build: .
+    restart: always
+    shm_size: '2gb'
+    ports:
+      - "8000:8000"
+    environment:
+      - FLASK_ENV=production
+      - BRAVE_PATH=/usr/bin/brave-browser
+      - EXTENSION_PATH=/app/extensions/raptor_unpacked
+      - MAX_CONCURRENT_TASKS=40
+      - DB_HOST=127.0.0.1
+      - DB_USER=rankplexuser
+      - DB_PASS=rankplex@2025
+      - DB_NAME=rankplexdb
+      - HEADLESS_MODE=true
+    volumes:
+      - ./:/app
+    command: [ "bash", "./start.sh" ]
+    network_mode: "host"
+    ipc: host
+    tty: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined

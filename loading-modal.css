@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&display=swap');
+
+/* Background Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Modal Box */
+.modal-box {
+    width: 420px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.15);
+}
+
+/* Title */
+.modal-box h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 12px;
+}
+
+/* Subtext */
+.subtext {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 25px;
+    line-height: 20px;
+}
+
+/* Progress Bar Container */
+.progress-container {
+    width: 100%;
+    height: 26px;
+    background: #eaeaea;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 auto 20px;
+}
+
+/* Progress Fill */
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00b29d, #ffcc33);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.2s linear;
+}
+
+/* Bottom Loading Text */
+.loading-text {
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 14px;
+    font-weight: 500;   /* Medium */
+    color: #686868;     /* Exact Figma color */
+    margin-top: 5px;
+    text-align: center;
+}
+/* Title */
+.modal-box h2 {
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 20px;
+    font-weight: 600;   /* SemiBold */
+    color: #000000;     /* grey-500 */
+    margin-bottom: 12px;
+}
+.subtext {
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 14px;
+    font-weight: 500;  /* Medium */
+    color: #686868;    /* Grey-300 */
+    margin-bottom: 25px;
+    line-height: 20px;
+}
+.modal-box h2 {
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #4B5563; /* grey-500 */
+}
+
+.subtext {
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #D1D5DB; /* grey-300 */
+}

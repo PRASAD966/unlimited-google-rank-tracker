@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Keywords - Rankplex</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/svg+xml" href="/images/nice-logo.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=999">
+    <link rel="stylesheet" href="/css/logout.css?v=999">
+    <style>
+        .edit-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 1200px;
+            min-height: 600px;
+            height: auto;
+            margin: 40px auto;
+            border: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        /* Responsive for Laptop/Tablet */
+        @media (max-width: 1366px) {
+            .edit-card {
+                padding: 30px;
+                margin: 20px auto;
+                max-width: 95vw;
+                min-height: 500px;
+            }
+
+            .card-header-row {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .edit-card {
+                padding: 20px;
+            }
+
+            .card-header-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .project-info-blk {
+                width: 100%;
+            }
+
+            .center-heading-blk {
+                text-align: left;
+                width: 100%;
+            }
+
+            .action-footer {
+                flex-direction: column-reverse;
+                gap: 15px;
+                align-items: flex-end;
+            }
+        }
+
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            /* Vertically center name and title */
+            justify-content: space-between;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .project-info-blk {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .folder-icon {
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .project-text h2 {
+            font-family: 'Lexend Deca', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 27px;
+            color: rgb(30, 30, 30);
+            margin: 0;
+        }
+
+        .target-domain {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .target-domain a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .center-heading-blk {
+            text-align: center;
+            flex: 1;
+        }
+
+        .center-heading-blk h1 {
+            font-family: 'Lexend Deca', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 27px;
+            color: rgb(30, 30, 30);
+            margin: 0;
+        }
+
+        .center-heading-blk p {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .editor-container {
+            margin-top: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #tagBox {
+            background: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 45px 12px 12px 12px;
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 380px;
+            /* Constrain height to allow footer visibility */
+            box-sizing: border-box;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            cursor: text;
+            position: relative;
+        }
+
+        /* Custom Scrollbar for Keyword Area */
+        #tagBox::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #tagBox::-webkit-scrollbar-track {
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        #tagBox::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+            border: 2px solid #f8fafc;
+        }
+
+        #tagBox::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        #tagBox:focus-within {
+            border-color: #00b29d;
+        }
+
+        #tagInput {
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 6px;
+            flex-grow: 1;
+            min-width: 150px;
+            font-family: inherit;
+        }
+
+        .keyword-tag {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 4px 12px;
+            margin: 4px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .remove-tag {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            color: #9ca3af;
+        }
+
+        .remove-tag:hover {
+            color: #ef4444;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .helper-text {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .action-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-cancel {
+            padding: 0 24px;
+            height: 36px;
+            /* Match dashboard style */
+            border-radius: 8px;
+            /* Match dashboard style */
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            color: #475569;
+        }
+
+        .btn-primary {
+            padding: 0 24px;
+            height: 36px;
+            /* Match dashboard style */
+            border-radius: 8px;
+            /* Match dashboard style */
+            border: none;
+            background: #00b29d;
+            color: #fff;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #009e8b;
+            transform: translateY(-1px);
+        }
+
+        /* Credit Bar Styles */
+        .credit-bar {
+            background: transparent;
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            color: #686868;
+            font-family: 'Lexend Deca', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 14px;
+        }
+
+        .credit-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+
+<body class="preload">
+
+    <!-- Sidebar Toggle -->
+    <div class="sidebar-toggle-btn" onclick="toggleDashboardSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="13 17 18 12 13 7"></polyline>
+            <polyline points="6 17 11 12 6 7"></polyline>
+        </svg>
+    </div>
+
+    <div class="dashboard">
+        <!-- SIDEBAR -->
+        <div class="dashboard-menu">
+            <div class="dashboard-logo-blk">
+                <div class="dashboard-logo">
+                    <img src="/images/nice-logo.svg" alt="Rankplex" width="69" height="60">
+                </div>
+                <div class="dashboard-toggle" onclick="toggleDashboardSidebar()"
+                    style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="dashboard-links">
+                <a href="/dashboard" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="/images/dashboard-icn.svg"></div>
+                    <div class="dashboard-cnt-blk">Dashboard</div>
+                </a>
+                <a href="/rank-check" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="/images/rank-check-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Create New Project</div>
+                </a>
+                <a href="/projects" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="/images/projects-img.svg"
+                            onerror="this.src='/images/dashboard-icn.svg'"></div>
+                    <div class="dashboard-cnt-blk">Running Projects</div>
+                </a>
+                <a href="/history" class="dashboard-menu-cnt-blk active">
+                    <!-- Keeping 'Completed' active contextually or maybe neither? Kept active for nav purposes -->
+                    <div class="dashboard-cnt-img-blk"><img src="/images/completed-projects-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Completed Projects</div>
+                </a>
+                <a href="/settings" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="/images/settings-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Settings</div>
+                </a>
+                <a href="javascript:void(0)" class="dashboard-menu-cnt-blk" onclick="openLogoutModal()">
+                    <div class="dashboard-cnt-img-blk"><img src="/images/log-out-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Log out</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="dashboard-main-wrapper">
+
+            <!-- Minimal Dashboard Header (Optional, kept for consistency with image roughly) -->
+            <!-- Image doesn't show top header, but functionality implies we might need credits visible somewhere? -->
+            <!-- I will keep the header functionally but make it minimal or clean if needed. -->
+            <!-- Given the user image shows standard sidebar, it likely has standard header. -->
+            <!-- But the card content is what matters. -->
+
+            <div class="dashboard-cnt">
+                <!-- Hiding standard title, showing minimal header for credits/nav -->
+                <div class="dashboard-cnt-top-blk">
+                    <input type="text" id="dashboardSearchInput" placeholder="Search keywords..."
+                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(104, 104, 104);">
+                </div>
+
+                <div class="dashboard-credentials-blk">
+                    <div class="credit-bar">
+                        <div class="credit-item">
+                            <span>Balance Credits:</span>
+                            <span style="font-weight: 500; color: #000000;">{{ credits.remaining }}</span>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" onclick="openBuyCreditsModal()"
+                        style="background: #007bff; color: #fff; text-decoration: none; padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: 500; cursor: pointer; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; line-height: 20px;">
+                        Buy Credits
+                    </a>
+                    <a href="/rank-check"
+                        style="background: #00b29d; color: #fff; text-decoration: none; padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: 500; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; line-height: 20px;">Create
+                        New Project</a>
+                </div>
+            </div>
+
+            <!-- Content Card -->
+            <div class="edit-card">
+
+                <div class="card-header-row">
+                    <!-- Left: Project Info -->
+                    <div class="project-info-blk">
+                        <div class="folder-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="project-text">
+                            <h2>{{ project_name }}</h2>
+                            <div class="target-domain">
+                                Target Domain: <a href="https://{{ target_domain }}" target="_blank">{{ target_domain
+                                    }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: Heading -->
+                    <div class="center-heading-blk">
+                        <h1>Edit Keywords</h1>
+                        <p>Press "Enter" after each Keyword to add multiple keywords</p>
+                    </div>
+
+                    <!-- Right spacer to balance center alignment -->
+                    <div style="flex: 1;"></div>
+                </div>
+
+                <!-- Editor Container with Tags -->
+                <div class="editor-container">
+                    <div id="tagBox" onclick="document.getElementById('tagInput').focus()">
+                        <!-- Helper text as absolute position if needed, or controlled via JS -->
+                        <div id="keywordHelperText"
+                            style="position: absolute; top: 12px; left: 10px; font-size: 13px; color: #9ca3af; pointer-events: none; margin-bottom: 10px; display: none;">
+                            Press "Enter" after each Keyword to add multiple keywords</div>
+
+                        <input type="text" id="tagInput"
+                            style="border:none; outline: none; margin-top: 4px; flex-grow: 1; min-width: 150px; font-family: inherit; font-size: 14px;">
+                    </div>
+                    <div id="duplicateWarning"
+                        style="color: #ef4444; font-size: 12px; margin-top: 8px; font-weight: 500; display: none; padding-left: 5px;">
+                        Already added keyword, use only unique keywords
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="action-footer"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 25px;">
+                    <div class="helper-text" id="tagHelpText"
+                        style="margin-top: 0; color: #64748b; font-weight: 500; font-size: 13px;">0 keywords added</div>
+                    <div style="display: flex; gap: 15px;">
+                        <a href="/history" class="btn-cancel">Cancel</a>
+                        <button class="btn-primary" id="btnRunCheck" onclick="runCheck()">Run Check</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Buy Credits Modal (Copied Structure or Placeholder function if shared JS not present) -->
+    <!-- Ideally we should include common JS or modal html if strictly required, but for now we link key IDs -->
+    <!-- Adding a minimal placeholder for 'openBuyCreditsModal' to avoid error if clicked, or rely on included scripts if any -->
+    <!-- Assuming logout logic is needed too -->
+    <div id="logoutModal" class="logout-overlay" style="display:none;">
+        <div class="logout-modal">
+            <h2>Are you sure you want to log out?</h2>
+            <div class="logout-actions">
+                <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const RUN_ID = "{{ run_id }}";
+        // Pre-loaded keywords from server (newline separated)
+        const EXISTING_KEYWORDS_RAW = `{{ keywords }}`;
+
+        let tags = [];
+        const tagInput = document.getElementById('tagInput');
+        const tagBox = document.getElementById('tagBox');
+        const helpText = document.getElementById('tagHelpText');
+        const helperPlaceholder = document.getElementById('keywordHelperText');
+
+        function init() {
+            console.log("Edit Page Loaded - Restored Tag Mode");
+            if (EXISTING_KEYWORDS_RAW) {
+                const lines = EXISTING_KEYWORDS_RAW.split('\n');
+                lines.forEach(line => {
+                    const kw = line.trim();
+                    if (kw) addTag(kw);
+                });
+            }
+            updateHelperState();
+        }
+
+        function createTag(label) {
+            const div = document.createElement('div');
+            div.setAttribute('class', 'keyword-tag');
+
+            const span = document.createElement('span');
+            span.innerText = label;
+
+            const closeBtn = document.createElement('i');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.setAttribute('class', 'remove-tag');
+
+            closeBtn.onclick = () => {
+                tags = tags.filter(t => t !== label);
+                div.remove();
+                updateCounts();
+                updateHelperState();
+            };
+
+            div.appendChild(span);
+            div.appendChild(closeBtn);
+            return div;
+        }
+
+        function addTag(kw) {
+            // Check for duplicates
+            if (tags.includes(kw)) {
+                const warningEl = document.getElementById('duplicateWarning');
+                warningEl.style.display = 'block';
+                // Hide after 3 seconds automatically
+                setTimeout(() => {
+                    warningEl.style.display = 'none';
+                }, 3000);
+                return;
+            }
+
+            // Hide warning if proceeding (or unrelated valid tag)
+            document.getElementById('duplicateWarning').style.display = 'none';
+
+            if (!tags.includes(kw)) {
+                tags.push(kw);
+                const tag = createTag(kw);
+                tagBox.insertBefore(tag, tagInput);
+                updateCounts();
+            }
+        }
+
+        function updateCounts() {
+            helpText.textContent = `${tags.length} keyword${tags.length !== 1 ? 's' : ''} added`;
+        }
+
+        function updateHelperState() {
+            const isTyping = tagInput.value.length > 0;
+            const isFocused = document.activeElement === tagInput;
+            const hasTags = tags.length > 0;
+
+            if (hasTags) {
+                helperPlaceholder.style.display = 'block';
+                helperPlaceholder.style.position = 'static';
+                helperPlaceholder.style.width = '100%';
+                helperPlaceholder.style.marginTop = '8px';
+            } else {
+                if (isTyping || isFocused) {
+                    helperPlaceholder.style.display = 'none';
+                } else {
+                    helperPlaceholder.style.display = 'block';
+                    helperPlaceholder.style.position = 'absolute';
+                    helperPlaceholder.style.top = '12px';
+                    helperPlaceholder.style.left = '10px';
+                }
+            }
+        }
+
+        tagInput.addEventListener('focus', updateHelperState);
+        tagInput.addEventListener('blur', updateHelperState);
+
+        tagInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                let v = e.target.value.trim();
+                if (v) {
+                    const parts = v.split(',').map(s => s.trim()).filter(s => s !== "");
+                    parts.forEach(kw => addTag(kw));
+                }
+                e.target.value = '';
+                updateHelperState();
+            } else if (e.key === 'Backspace' && !e.target.value && tags.length > 0) {
+                const keywordTags = Array.from(tagBox.querySelectorAll('.keyword-tag'));
+                if (keywordTags.length > 0) {
+                    const lastTag = keywordTags[keywordTags.length - 1];
+                    const label = lastTag.querySelector('span').innerText;
+                    tags = tags.filter(t => t !== label);
+                    lastTag.remove();
+                    updateCounts();
+                    updateHelperState();
+                }
+            }
+        });
+
+        tagInput.addEventListener('input', updateHelperState);
+
+        // Search filtering logic
+        document.getElementById('dashboardSearchInput').addEventListener('keyup', function (e) {
+            const term = e.target.value.toLowerCase();
+            const tagElements = document.querySelectorAll('.keyword-tag');
+            tagElements.forEach(el => {
+                const text = el.querySelector('span').innerText.toLowerCase();
+                if (text.includes(term)) {
+                    el.style.display = 'flex';
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+        });
+
+        function runCheck() {
+            const btn = document.getElementById('btnRunCheck');
+            const originalText = btn.innerText;
+
+            if (tags.length === 0) {
+                alert("Please enter at least one keyword.");
+                return;
+            }
+
+            btn.innerText = "Starting...";
+            btn.disabled = true;
+
+            fetch(`/api/re-check/${RUN_ID}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ keywords: tags })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.run_id) {
+                        window.location.href = `/progress/${data.run_id}`;
+                    } else {
+                        alert("Error: " + (data.error || "Unknown error"));
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                    }
+                })
+                .catch(e => {
+                    console.error(e);
+                    alert("Network error.");
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                });
+        }
+
+        function toggleDashboardSidebar() {
+            document.querySelector('.dashboard-menu').classList.toggle('active');
+        }
+
+        function openLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'flex';
+        }
+        function closeLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'none';
+        }
+        function confirmLogout() {
+            window.location.href = '/logout';
+        }
+
+        function openBuyCreditsModal() {
+            window.location.href = '/settings';
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+
+</html>

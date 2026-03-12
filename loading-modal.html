@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankplex</title>
+    <link rel="icon" type="image/svg+xml" href="/images/nice-logo.svg">
+    <link rel="stylesheet" href="/loading-modal.css">
+</head>
+
+<body>
+
+    <div class="overlay">
+        <div class="modal-box">
+
+            <h2 id="loadingTitle">Processing Your Keyword Check...</h2>
+            <p class="subtext" id="loadingSubtitle">
+                We’re analyzing your URL, scanning search results, and finding your keyword ranks.
+            </p>
+
+            <!-- Progress bar -->
+            <div class="progress-container">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+
+            <p class="loading-text" id="loadingStep">Initializing...</p>
+            <script>
+                let progress = 0;
+
+                const steps = [
+                    "Processing your keyword check...",
+                    "Analyzing your website...",
+                    "Scanning Google search results...",
+                    "Finding your keyword ranks...",
+                    "Fetching website data...",
+                    "Preparing final results..."
+                ];
+
+                const stepText = document.getElementById("loadingStep");
+                const bar = document.getElementById("progressBar");
+
+                // Create interval and store reference to stop later
+                let loader = setInterval(() => {
+
+                    if (progress >= 100) {
+                        progress = 100;
+                        bar.style.width = "100%";
+                        bar.innerText = "100%";
+                        stepText.innerText = "Completed!";
+
+                        clearInterval(loader);   // ← STOP interval here
+
+                        setTimeout(() => {
+                            window.location.href = "rank-results.html";
+                        }, 600);
+
+                        return;
+                    }
+
+                    progress += 1;
+                    bar.style.width = progress + "%";
+                    bar.innerText = progress + "%";
+
+                    // Step updates
+                    if (progress === 5) stepText.innerText = steps[0];
+                    if (progress === 25) stepText.innerText = steps[1];
+                    if (progress === 45) stepText.innerText = steps[2];
+                    if (progress === 65) stepText.innerText = steps[3];
+                    if (progress === 85) stepText.innerText = steps[4];
+
+                }, 40);  // Adjust speed
+            </script>
+
+        </div>
+    </div>
+
+
+    <!-- DYNAMIC LOADING JS -->
+
+
+</body>
+
+</html>

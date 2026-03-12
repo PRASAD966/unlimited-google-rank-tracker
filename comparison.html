@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankplex</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/svg+xml" href="./images/nice-logo.svg">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css?v=5">
+    <link rel="stylesheet" href="./css/logout.css">
+</head>
+
+<body class="preload">
+
+    <!-- Fixed toggle button (visible when sidebar is hidden) -->
+    <div class="sidebar-toggle-btn" onclick="toggleDashboardSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="13 17 18 12 13 7"></polyline>
+            <polyline points="6 17 11 12 6 7"></polyline>
+        </svg>
+    </div>
+
+    <div class="dashboard">
+        <!-- SIDEBAR  -->
+        <div class="dashboard-menu">
+            <div class="dashboard-logo-blk">
+                <div class="dashboard-logo">
+                    <img src="./images/nice-logo.svg" alt="nice-logo" width="69" height="60">
+                </div>
+                <div class="dashboard-toggle" onclick="toggleDashboardSidebar()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="dashboard-links">
+                <a href="/dashboard" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/dashboard-icn.svg"></div>
+                    <div class="dashboard-cnt-blk">Dashboard</div>
+                </a>
+
+                <a href="/rank-check" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/rank-check-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Create New Project</div>
+                </a>
+
+                <a href="/projects" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/projects-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Running</div>
+                </a>
+
+                <a href="/history" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/completed-projects-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Completed Projects</div>
+                </a>
+
+
+
+                <a href="/settings" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/settings-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Settings</div>
+                </a>
+
+                <a href="javascript:void(0)" class="dashboard-menu-cnt-blk" onclick="openLogoutModal()">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/log-out-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Log out</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE CONTENT -->
+        <div class="dashboard-main-wrapper">
+
+            <!-- Top Header -->
+            <div class="dashboard-cnt">
+
+                <div class="dashboard-cnt-top-blk">
+                    <!-- Search input removed -->
+                </div>
+
+                <div class="dashboard-credentials-blk">
+
+                    <!-- Notification removed -->
+
+                    <div id="toastContainer" class="toast-container"></div>
+
+                    <a href="/rank-check"
+                        style="background: #00b29d; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; display: inline-block;">Create
+                        New Project</a>
+
+
+
+                </div>
+
+            </div>
+            <div class="dashboard-main">
+                <h2 class="main-heading">Comparison Criteria</h2>
+                <p class="sub-heading">Select your criteria to compare keyword performance across selected time ranges
+                    to understand ranking
+                    trends and fluctuations.</p>
+
+                <div class="dashboard-table rank">
+                    <form method="POST" action="/comparison">
+                        <div class="flds-box">
+                            <div class="field-33">
+                                <label>Select Project</label>
+                                <select id="project-selection" name="project_name">
+                                    <option value="">Select a project</option>
+                                    {% for project in projects %}
+                                    <option value="{{ project }}">{{ project }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="field-33">
+                                <label>Enter Keyword</label>
+                                <input type="text" name="keyword" placeholder="e.g., best lawyer" required>
+                            </div>
+                            <div class="field-33">
+                                <label>URL*</label>
+                                <input type="text" name="target_domain" placeholder="e.g., www.example.com" required>
+                            </div>
+                        </div>
+                        <div class="flds-box">
+                            <div class="field-33">
+                                <label>From Date</label>
+                                <input type="date" name="from_date">
+                            </div>
+                            <div class="field-33">
+                                <label>To Date</label>
+                                <input type="date" name="to_date">
+                            </div>
+                            <div class="field-33">
+                                <label>&nbsp;</label>
+                                <button type="submit" class="cmn-btn"
+                                    style="width: 100%; text-align: center; display: block; border: none; cursor: pointer;">Compare
+                                    Ranking</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/owl.carousel.min.js"></script>
+    <script src="./js/common.js?v=4"></script>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="logout-overlay">
+        <div class="logout-modal">
+            <h2>Are you sure you want to log out?</h2>
+            <p>You'll be signed out from your current session.</p>
+
+            <div class="logout-actions">
+                <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/logout.js"></script>
+</body>
+
+</html>

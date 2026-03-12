@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankplex</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/svg+xml" href="./images/nice-logo.svg">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css?v=5">
+    <link rel="stylesheet" href="./css/logout.css">
+    <style>
+        /* Location Modal Styles */
+        .location-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .location-modal {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .location-modal h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .loc-field-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .loc-field-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .loc-field-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Lexend Deca', sans-serif;
+            outline: none;
+        }
+
+        .loc-field-group input:focus {
+            border-color: #00b29d;
+        }
+
+        .loc-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .country-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .country-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .country-item:hover {
+            background-color: #f0fdfb;
+            color: #00b29d;
+        }
+
+        #tagBox {
+            background: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 8px;
+            min-height: 100px;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            cursor: text;
+        }
+
+        #tagInput {
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 6px;
+            flex-grow: 1;
+            min-width: 150px;
+        }
+
+        .keyword-tag {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 4px 12px;
+            margin: 4px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .keyword-tag .remove-tag {
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .rank-check-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .rank-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Lexend Deca', sans-serif;
+            text-align: center;
+            display: block;
+        }
+
+        .rank-btn-reset {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .rank-btn-reset:hover {
+            background: #e5e7eb !important;
+            color: #374151 !important;
+        }
+
+        .rank-btn-submit {
+            background: #00b29d;
+            color: #fff;
+            border: none;
+        }
+
+        .rank-btn-submit:hover {
+            background: #008f7e;
+        }
+
+        /* Credit Bar Styles */
+        .credit-bar {
+            background: transparent;
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            color: #686868;
+            font-family: 'Lexend Deca', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 14px;
+            box-shadow: none;
+        }
+
+        .credit-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+
+<body class="preload">
+
+    <!-- Fixed toggle button (visible when sidebar is hidden) -->
+    <div class="sidebar-toggle-btn" onclick="toggleDashboardSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="13 17 18 12 13 7"></polyline>
+            <polyline points="6 17 11 12 6 7"></polyline>
+        </svg>
+    </div>
+
+    <div class="dashboard">
+        <!-- SIDEBAR  -->
+        <div class="dashboard-menu">
+            <div class="dashboard-logo-blk">
+                <div class="dashboard-logo">
+                    <img src="./images/nice-logo.svg" alt="Rankplex" width="69" height="60">
+                </div>
+                <div class="dashboard-toggle" onclick="toggleDashboardSidebar()"
+                    style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="dashboard-links">
+
+                <a href="/dashboard" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/dashboard-icn.svg"></div>
+                    <div class="dashboard-cnt-blk">Dashboard</div>
+                </a>
+
+                <a href="/rank-check" class="dashboard-menu-cnt-blk active">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/rank-check-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Create New Project</div>
+                </a>
+
+                <a href="/projects" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/projects-img.svg"
+                            onerror="this.src='./images/dashboard-icn.svg'"></div>
+                    <div class="dashboard-cnt-blk">Running Projects</div>
+                </a>
+
+                <a href="/history" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/completed-projects-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Completed Projects</div>
+                </a>
+
+
+
+
+                <a href="/settings" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/settings-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Settings</div>
+                </a>
+
+                <a href="javascript:void(0)" class="dashboard-menu-cnt-blk" onclick="openLogoutModal()">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/log-out-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Log out</div>
+                </a>
+
+            </div>
+        </div>
+
+
+        <div class="dashboard-main-wrapper">
+
+            <div class="dashboard-cnt">
+
+                <div class="dashboard-cnt-top-blk">
+                    <!-- Search input added -->
+                    <input type="text" id="dashboardSearchInput" placeholder="Search a project..."
+                        style="display: block; font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(104, 104, 104);">
+                </div>
+
+                <div class="dashboard-credentials-blk">
+                    <!-- Credit Display -->
+                    <!-- Credit Display  -->
+                    <div class="credit-bar">
+                        <div class="credit-item">
+                            <span>Balance Credits:</span>
+                            <span style="font-weight: 500; color: #000000;">{{ credits.remaining }}</span>
+                        </div>
+                    </div>
+                    <!-- Buy Credits Button -->
+                    <a href="javascript:void(0)" onclick="openBuyCreditsModal()"
+                        style="background: #007bff; color: #fff; text-decoration: none; padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: 500; cursor: pointer; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; line-height: 20px;">
+                        Buy Credits
+                    </a>
+
+                    <!-- Notification block removed -->
+
+                    <div id="toastContainer" class="toast-container"></div>
+
+                    <a href="/rank-check"
+                        style="background: #00b29d; color: #fff; text-decoration: none; padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: 500; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; line-height: 20px;">Create
+                        New Project</a>
+
+
+
+                </div>
+
+            </div>
+
+            <div class="dashboard-main">
+                <div class="rank-check-blk">
+                    <div class="rank-check-lft-blk">
+                        <div class="main-heading"
+                            style="font-family: 'Lexend Deca', sans-serif; font-weight: 700; font-size: 18px; line-height: 27px; color: #1e1e1e;">
+                            New Keyword Rank Check</div>
+                        <p class="sub-heading">Run keyword ranking checks quickly with accurate, location-based results.
+                        </p>
+                    </div>
+
+                </div>
+
+
+
+                <form action="/start-task" method="POST" enctype="multipart/form-data">
+                    <style>
+                        .rank-check-grid {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 40px;
+                            /* Horizontal gap */
+                            row-gap: 24px;
+                            /* Vertical gap */
+                            margin-top: 10px;
+                        }
+
+                        /* No longer needed .grid-col wrapper */
+
+                        .form-group {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 8px;
+                        }
+
+                        .form-group label {
+                            font-weight: 600;
+                            color: #333;
+                            font-size: 14px;
+                            font-family: 'Lexend Deca', sans-serif;
+                        }
+
+                        .form-group label span.required {
+                            color: #ff4444;
+                        }
+
+                        .helper-text {
+                            font-size: 13px;
+                            color: #9ca3af;
+                            margin-top: 4px;
+                        }
+
+                        .form-input {
+                            padding: 12px 16px;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 8px;
+                            width: 100%;
+                            outline: none;
+                            font-family: inherit;
+                            font-size: 14px;
+                            transition: border-color 0.2s;
+                        }
+
+                        .form-input:focus {
+                            border-color: #00b29d;
+                        }
+
+                        .upload-area {
+                            border: 2px dashed #e5e7eb;
+                            border-radius: 12px;
+                            padding: 30px 20px;
+                            text-align: center;
+                            cursor: pointer;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            height: 140px;
+                            transition: all 0.2s;
+                            background: #fafafa;
+                        }
+
+                        .upload-area:hover {
+                            border-color: #00b29d;
+                            background-color: #f0fdfb;
+                        }
+
+                        .upload-icon {
+                            width: 48px;
+                            height: 48px;
+                            margin-bottom: 12px;
+                            color: #9ca3af;
+                        }
+
+                        .keywords-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        }
+
+                        .clear-all-btn {
+                            color: #6b7280;
+                            cursor: pointer;
+                            font-size: 13px;
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                            font-weight: 500;
+                        }
+
+                        .clear-all-btn:hover {
+                            color: #ef4444;
+                        }
+
+                        .form-actions {
+                            display: flex;
+                            justify-content: flex-end;
+                            gap: 16px;
+                            margin-top: 40px;
+                            padding-top: 24px;
+                            /* border-top: 1px solid #f3f4f6; */
+                        }
+
+                        /* Override tagBox style */
+                        #tagBox {
+                            background: #fff;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 8px;
+                            padding: 8px;
+                            height: 140px;
+                            overflow-y: auto;
+                            box-sizing: border-box;
+                            display: flex;
+                            flex-wrap: wrap;
+                            align-content: flex-start;
+                            cursor: text;
+                            position: relative;
+                        }
+
+                        .keyword-tag {
+                            background: #f3f4f6;
+                            padding: 6px 14px;
+                            border-radius: 6px;
+                            border: 1px solid #e5e7eb;
+                            font-size: 13px;
+                            color: #374151;
+                        }
+
+                        @media (max-width: 768px) {
+                            .rank-check-grid {
+                                grid-template-columns: 1fr;
+                                gap: 24px;
+                            }
+                        }
+                    </style>
+
+                    <div class="dashboard-table rank"
+                        style="background: #fff; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                        <div class="rank-check-grid">
+
+                            <!-- Row 1: Project Name & Domain -->
+                            <div class="form-group">
+                                <label>Project Name<span class="required">*</span></label>
+                                <div style="position: relative;">
+                                    <input type="text" name="project_name" id="projectNameInput" class="form-input"
+                                        placeholder="Project Name" autocomplete="off" required>
+
+                                    <!-- Dropdown arrow removed -->
+
+                                    <div id="projectSuggestionsList" class="country-list"
+                                        data-projects='{{ previous_projects|default([])|tojson }}'></div>
+                                </div>
+
+
+                                <script>
+                                    (function () {
+                                        const input = document.getElementById('projectNameInput');
+                                        const list = document.getElementById('projectSuggestionsList');
+
+                                        let projects = [];
+                                        try {
+                                            projects = JSON.parse(list.getAttribute('data-projects') || '[]');
+                                        } catch (e) {
+                                            console.error("Failed to parse projects", e);
+                                        }
+
+                                        function showSuggestions(val) {
+                                            list.innerHTML = '';
+                                            if (!val) {
+                                                list.style.display = 'none';
+                                                return;
+                                            }
+
+                                            const matches = projects.filter(p => p.toLowerCase().includes(val.toLowerCase()));
+
+                                            if (matches.length > 0) {
+                                                matches.forEach(p => {
+                                                    const div = document.createElement('div');
+                                                    div.className = 'country-item'; // Reuse existing style
+                                                    div.textContent = p;
+                                                    div.onclick = () => {
+                                                        input.value = p;
+                                                        list.style.display = 'none';
+                                                    };
+                                                    list.appendChild(div);
+                                                });
+                                                list.style.display = 'block';
+                                            } else {
+                                                list.style.display = 'none';
+                                            }
+                                        }
+
+                                        input.addEventListener('input', () => showSuggestions(input.value.trim()));
+
+                                        // Close on click outside
+                                        document.addEventListener('click', function (e) {
+                                            if (!input.contains(e.target) && !list.contains(e.target)) {
+                                                list.style.display = 'none';
+                                            }
+                                        });
+                                    })();
+                                </script>
+                            </div>
+
+                            <div class="form-group">
+                                <label>URL<span class="required">*</span></label>
+                                <input type="text" name="target_domain" class="form-input"
+                                    placeholder="e.g, www.example.com" required>
+
+                            </div>
+
+                            <!-- Row 2: Upload Files & Enter Keywords -->
+                            <div class="form-group">
+                                <label style="display: flex; justify-content: space-between; align-items: center;">
+                                    Upload Keywords File
+                                    <span style="font-size: 13px; color: #9ca3af; font-weight: 400;">Upload a TXT file
+                                        containing your target keywords.</span>
+                                </label>
+                                <div class="upload-area" onclick="document.getElementById('file_upload').click()">
+                                    <div id="uploadDefaultContent"
+                                        style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="17 8 12 3 7 8"></polyline>
+                                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                                        </svg>
+                                        <div style="color: #6b7280; font-size: 14px;">Drag & Drop or <span
+                                                style="color: #00b29d; font-weight: 600;">Upload your File</span>
+                                        </div>
+                                    </div>
+
+                                    <div id="uploadFileContent"
+                                        style="display: none; flex-direction: column; align-items: center; width: 100%;">
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00b29d"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                                            style="margin-bottom: 12px;">
+                                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
+                                            </path>
+                                            <polyline points="13 2 13 9 20 9"></polyline>
+                                        </svg>
+                                        <div id="uploadedFileName"
+                                            style="font-weight: 600; font-size: 14px; color: #374151; margin-bottom: 8px; text-align: center; word-break: break-all;">
+                                            filename.txt</div>
+                                        <div style="color: #ef4444; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px;"
+                                            onclick="removeUploadedFile(event)">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                            Remove File
+                                        </div>
+                                    </div>
+
+                                    <input type="file" id="file_upload" name="file" accept=".txt" style="display:none">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="keywords-header">
+                                    <label>Or Enter Keywords</label>
+                                    <span onclick="clearAllKeywords()"
+                                        style="cursor: pointer; color: #6b7280; font-size: 13px; font-weight: 500;">Clear
+                                        All</span>
+                                </div>
+                                <div id="tagBox" onclick="document.getElementById('tagInput').focus()">
+                                    <input type="text" id="tagInput"
+                                        style="border:none; outline: none; margin-top: 4px;">
+                                    <div id="keywordHelperText"
+                                        style="position: absolute; top: 12px; left: 10px; font-size: 13px; color: #9ca3af; pointer-events: none;">
+                                        Press "Enter" after each Keyword to add multiple keywords</div>
+                                </div>
+                                <div id="duplicateWarning"
+                                    style="color: #ef4444; font-size: 12px; margin-top: 5px; font-weight: 500; display: none; padding-left: 5px;">
+                                    Already added keyword, use only unique keywords
+                                </div>
+                                <input type="hidden" name="keywords" id="keywordsField">
+                                <div class="helper-text" id="tagHelpText">0 keywords added</div>
+                            </div>
+
+                            <!-- Row 3: Location & Max Search -->
+                            <div class="form-group">
+                                <label>Location<span class="required">*</span></label>
+                                <div style="position: relative;">
+                                    <input type="text" name="location" id="mainLocationInput" class="form-input"
+                                        placeholder="Select Location" onkeydown="event.preventDefault()"
+                                        onclick="openLocationModal()" style="cursor: pointer; background: #fff;"
+                                        required>
+                                    <svg style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #9ca3af;"
+                                        width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="helper-text">Choose the location from which rankings will be checked.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Max Search Pages<span class="required">*</span></label>
+                                <div style="position: relative;">
+                                    <input type="number" id="maxPagesInput" name="max_pages" class="form-input"
+                                        placeholder="e.g, 10" value="10" min="1" max="50" required>
+                                    <div
+                                        style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 2px; z-index: 5;">
+                                        <!-- Up Arrow (Increment) -->
+                                        <svg onclick="adjustMaxPages(1)" width="10" height="10" viewBox="0 0 24 24"
+                                            fill="none" stroke="#9ca3af" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" style="cursor: pointer;">
+                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                        </svg>
+                                        <!-- Down Arrow (Decrement) -->
+                                        <svg onclick="adjustMaxPages(-1)" width="10" height="10" viewBox="0 0 24 24"
+                                            fill="none" stroke="#9ca3af" stroke-width="3" stroke-linecap="round"
+                                            stroke-linejoin="round" style="cursor: pointer;">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="helper-text">Choose how deep we should scan Google’s search results.
+                                </div>
+                            </div>
+                            <script>
+                                function adjustMaxPages(delta) {
+                                    const input = document.getElementById('maxPagesInput');
+                                    let val = parseInt(input.value);
+                                    if (isNaN(val)) val = 10; // Default fallback
+
+                                    const min = parseInt(input.min) || 1;
+                                    const max = parseInt(input.max) || 50;
+
+                                    val += delta;
+
+                                    if (val < min) val = min;
+                                    if (val > max) val = max;
+
+                                    input.value = val;
+                                }
+                            </script>
+
+                        </div>
+
+                        <!-- Footer Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="rank-btn rank-btn-reset" onclick="fullReset()"
+                                style="width: 156px; height: 36px; padding: 0; background: #f9fafb; font-weight: 500; font-size: 13px; line-height: 20px; font-family: 'Lexend Deca', sans-serif; color: #4b5563; display: inline-flex; justify-content: center; align-items: center; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;">Reset</button>
+                            <button type="button" class="rank-btn rank-btn-submit" onclick="confirmStartTask()"
+                                style="width: 156px; height: 36px; padding: 0; font-weight: 500; font-size: 13px; line-height: 20px; font-family: 'Lexend Deca', sans-serif; display: inline-flex; justify-content: center; align-items: center; border-radius: 8px; cursor: pointer;">
+                                Start Rank Check
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/owl.carousel.min.js"></script>
+    <script src="./js/common.js?v=4"></script>
+    <script>
+
+
+        let tags = [];
+        let currentFileTag = null;
+        const tagInput = document.getElementById('tagInput');
+        const tagBox = document.getElementById('tagBox');
+        const hidden = document.getElementById('keywordsField');
+        const helpText = document.getElementById('tagHelpText');
+        const fileInput = document.getElementById('file_upload');
+
+        function createTag(label, isFile = false) {
+            const div = document.createElement('div');
+            div.setAttribute('class', 'keyword-tag');
+            if (isFile) div.style.background = '#00b29d'; // Use teal for files
+
+            const span = document.createElement('span');
+            span.innerHTML = isFile ? '📄 ' + label : label;
+
+            const closeBtn = document.createElement('i');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.setAttribute('class', 'remove-tag');
+
+            closeBtn.onclick = () => {
+                if (isFile) {
+                    currentFileTag = null;
+                    fileInput.value = ''; // Reset file input
+                } else {
+                    tags = tags.filter(t => t !== label);
+                }
+                div.remove();
+                updateHidden();
+            };
+
+            div.appendChild(span);
+            div.appendChild(closeBtn);
+            return div;
+        }
+
+        function updateHidden() {
+            hidden.value = tags.join(',');
+
+            let msg = `${tags.length} keyword${tags.length !== 1 ? 's' : ''} added.`;
+            if (currentFileTag) {
+                msg += ` File detected: ${currentFileTag}.`;
+            }
+            helpText.textContent = msg;
+
+            if (tags.length > 0 || currentFileTag) {
+                hidden.removeAttribute('required');
+            } else {
+                hidden.setAttribute('required', '');
+            }
+
+            updateHelperState();
+        }
+
+        function updateHelperState() {
+            const helper = document.getElementById('keywordHelperText');
+            if (!helper) return;
+
+            const isTyping = tagInput.value.length > 0;
+            const isFocused = document.activeElement === tagInput;
+            const hasTags = tags.length > 0;
+
+            if (hasTags) {
+                // Show at bottom as a block element to avoid overlap
+                // Always show when tags exist, even if typing
+                helper.style.display = 'block';
+                helper.style.position = 'static';
+                helper.style.width = '100%';
+                helper.style.marginTop = '8px';
+                helper.style.color = '#9ca3af';
+            } else {
+                if (isTyping || isFocused) {
+                    // Hide when typing or focused if no tags
+                    helper.style.display = 'none';
+                } else {
+                    // Show placeholder at top absolute
+                    helper.style.display = 'block';
+                    helper.style.position = 'absolute';
+                    helper.style.top = '12px';
+                    helper.style.left = '10px';
+                    helper.style.width = 'auto';
+                    helper.style.marginTop = '0';
+                }
+            }
+        }
+
+        tagInput.addEventListener('focus', updateHelperState);
+        tagInput.addEventListener('blur', updateHelperState);
+
+        tagInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                let v = e.target.value.trim();
+                if (v) {
+                    // Support comma or newline separated keywords
+                    const parts = v.split(/[,\n]/).map(s => s.trim()).filter(s => s !== "");
+                    parts.forEach(kw => {
+                        const warningEl = document.getElementById('duplicateWarning');
+                        if (warningEl) warningEl.style.display = 'none';
+
+                        tags.push(kw);
+                        const tag = createTag(kw);
+                        tagBox.insertBefore(tag, tagInput);
+                    });
+                    updateHidden();
+                }
+                e.target.value = '';
+                updateHelperState(); // Update state after clearing input
+            } else if (e.key === 'Backspace' && !e.target.value && tags.length > 0) {
+                // Remove the last keyword tag
+                const keywordTags = Array.from(tagBox.querySelectorAll('.keyword-tag')).filter(t => !t.innerText.includes('📄'));
+                if (keywordTags.length > 0) {
+                    const lastTag = keywordTags[keywordTags.length - 1];
+                    const label = lastTag.querySelector('span').innerText;
+                    tags = tags.filter(t => t !== label);
+                    lastTag.remove();
+                    updateHidden();
+                }
+            }
+        });
+
+        // Also handle comma as a trigger during typing
+        tagInput.addEventListener('input', e => {
+            let v = e.target.value;
+            if (v.includes(',')) {
+                const parts = v.split(',');
+                // If there's at least one comma, process all segments except the last one
+                for (let i = 0; i < parts.length - 1; i++) {
+                    let kw = parts[i].trim();
+                    if (kw) {
+                        tags.push(kw);
+                        const tag = createTag(kw);
+                        tagBox.insertBefore(tag, tagInput);
+                    }
+                }
+                const last = parts[parts.length - 1];
+                e.target.value = last; // Keep the last partial part
+                updateHidden();
+            }
+            updateHelperState();
+        });
+
+        function clearAllKeywords() {
+            tags = [];
+            const keywordTags = tagBox.querySelectorAll('.keyword-tag');
+            keywordTags.forEach(tag => tag.remove());
+            updateHidden();
+            updateHelperState();
+        }
+
+
+        function handleFileSelection(file) {
+            if (file) {
+                currentFileTag = file.name;
+
+                // Show file info in upload area
+                document.getElementById('uploadDefaultContent').style.display = 'none';
+                const fileContent = document.getElementById('uploadFileContent');
+                fileContent.style.display = 'flex';
+                document.getElementById('uploadedFileName').textContent = file.name;
+
+                updateHidden();
+            }
+        }
+
+        function removeUploadedFile(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            // Clear input
+            fileInput.value = '';
+            currentFileTag = null;
+
+            // Reset UI
+            document.getElementById('uploadDefaultContent').style.display = 'flex';
+            document.getElementById('uploadFileContent').style.display = 'none';
+
+            updateHidden();
+        }
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function (e) {
+                handleFileSelection(e.target.files[0]);
+            });
+        }
+
+        // Drag and Drop Logic
+        const uploadArea = document.querySelector('.upload-area');
+        if (uploadArea) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                uploadArea.classList.add('highlight');
+                uploadArea.style.borderColor = '#00b29d';
+                uploadArea.style.backgroundColor = '#f0fdfb';
+            }
+
+            function unhighlight(e) {
+                uploadArea.classList.remove('highlight');
+                uploadArea.style.borderColor = '#e5e7eb';
+                uploadArea.style.backgroundColor = '#fafafa';
+            }
+
+            uploadArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (file.type === "text/plain" || file.name.endsWith('.txt')) {
+                        fileInput.files = files; // Update input files
+                        handleFileSelection(file);
+                    } else {
+                        showAlert("File Error", "Please upload a .txt file");
+                    }
+                }
+            }
+        }
+
+        function clearAll() {
+            tags = [];
+            currentFileTag = null;
+            fileInput.value = '';
+            const allTags = tagBox.querySelectorAll('.keyword-tag');
+            allTags.forEach(t => t.remove());
+            updateHidden();
+        }
+
+        function fullReset() {
+            document.querySelector('form').reset();
+            clearAll();
+        }
+
+        // Search Redirect Logic
+        document.getElementById('rankCheckSearchInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const cv = this.value.trim();
+                if (cv) {
+                    window.location.href = '/history?search=' + encodeURIComponent(cv);
+                }
+            }
+        });
+    </script>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="logout-overlay">
+        <div class="logout-modal">
+            <h2>Are you sure you want to log out?</h2>
+            <p>You'll be signed out from your current session.</p>
+
+            <div class="logout-actions">
+                <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/logout.js"></script>
+    <!-- Location Selection Modal -->
+    <div id="locationModal" class="location-modal-overlay">
+        <div class="location-modal">
+            <h3>Select Location</h3>
+
+            <div class="loc-field-group">
+                <label>Country</label>
+                <input type="text" id="locCountry" placeholder="Type to search country..." autocomplete="off">
+                <div id="countryList" class="country-list"></div>
+            </div>
+
+            <div class="loc-field-group">
+                <label>State / Province</label>
+                <input type="text" id="locState" placeholder="Type to search state..." autocomplete="off">
+                <div id="stateList" class="country-list"></div>
+            </div>
+
+            <div class="loc-field-group">
+                <label>City</label>
+                <input type="text" id="locCity" placeholder="Type to search city..." autocomplete="off">
+                <div id="cityList" class="country-list"></div>
+            </div>
+
+            <div class="loc-field-group">
+                <label>Pincode / Zip Code</label>
+                <input type="text" id="locPincode" placeholder="Type to search pincode..." autocomplete="off">
+                <div id="pincodeList" class="country-list"></div>
+            </div>
+
+            <div class="loc-actions">
+                <button type="button" class="rank-btn rank-btn-reset" onclick="closeLocationModal()"
+                    style="width: auto; padding: 8px 20px;">Cancel</button>
+                <button type="button" class="rank-btn rank-btn-submit" onclick="submitLocation()"
+                    style="width: auto; padding: 8px 20px;">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Location Modal Logic
+
+
+        const locCountryInput = document.getElementById('locCountry');
+        const locStateInput = document.getElementById('locState');
+        const locCityInput = document.getElementById('locCity');
+        const locPincodeInput = document.getElementById('locPincode');
+
+        const countryListDiv = document.getElementById('countryList');
+        const stateListDiv = document.getElementById('stateList');
+        const cityListDiv = document.getElementById('cityList');
+        const pincodeListDiv = document.getElementById('pincodeList');
+
+        let allCountries = [];
+        let countryStateMap = {}; // Cache states
+        let stateCityMap = {};    // Cache cities
+
+        // Sample Data for demo (Pincode is still manual)
+        const pincodeData = ["10001", "90210", "110001", "400001", "SW1A 1AA"];
+
+        function openLocationModal() {
+            document.getElementById('locationModal').style.display = 'flex';
+            if (allCountries.length === 0) {
+                fetchCountries();
+            }
+        }
+
+        function closeLocationModal() {
+            document.getElementById('locationModal').style.display = 'none';
+        }
+
+        function submitLocation() {
+            const country = locCountryInput.value.trim();
+            const state = locStateInput.value.trim();
+            const city = locCityInput.value.trim();
+            let pincode = locPincodeInput.value.trim();
+
+            if (!country) {
+                alert("Please select at least a Country.");
+                return;
+            }
+
+            // valid pincode format "12345 - Area" -> extract "12345"
+            if (pincode.includes('-')) {
+                pincode = pincode.split('-')[0].trim();
+            }
+
+            let parts = [];
+            // Order: City, State, Country Pincode (Standard address format)
+            if (city) parts.push(city);
+            if (state) parts.push(state);
+            if (country) parts.push(country);
+            if (pincode) parts.push(pincode);
+
+            if (parts.length > 0) {
+                document.getElementById('mainLocationInput').value = parts.join(', ');
+                // Validation styling removal if needed (manual validation)
+                document.getElementById('mainLocationInput').setCustomValidity('');
+            }
+            closeLocationModal();
+        }
+
+        // --- API Integration ---
+
+        // 1. Fetch Countries
+        async function fetchCountries() {
+            locCountryInput.placeholder = "Loading countries...";
+            try {
+                const response = await fetch('https://countriesnow.space/api/v0.1/countries');
+                const result = await response.json();
+                if (!result.error) {
+                    allCountries = result.data.map(c => c.country);
+                    locCountryInput.placeholder = "Type to search country...";
+                }
+            } catch (error) {
+                console.error("Error fetching countries:", error);
+                locCountryInput.placeholder = "Error loading countries";
+            }
+        }
+
+        // 2. Fetch States
+        async function fetchStates(countryName) {
+            locStateInput.placeholder = "Loading states...";
+            locStateInput.value = ""; // Reset
+            locCityInput.value = "";  // Reset
+
+            try {
+                const response = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ country: countryName })
+                });
+                const result = await response.json();
+                if (!result.error) {
+                    // Store both name and code
+                    // We need a way to look up code by name later in fetchPincodes
+                    // Let's store a global map: { "California": "CA", "Texas": "TX" ... }
+                    // CAUTION: State names might duplicate across countries? 
+                    // Since we refetch on country change, we can clear or overwrite a current country map.
+
+                    stateCodeMap = {}; // Clear previous
+                    const states = result.data.states.map(s => {
+                        stateCodeMap[s.name] = s.state_code; // Map Name -> Code
+                        return s.name;
+                    });
+
+                    countryStateMap[countryName] = states;
+                    locStateInput.placeholder = "Type to search state...";
+                } else {
+                    locStateInput.placeholder = "No states found or error";
+                }
+            } catch (error) {
+                console.error("Error fetching states:", error);
+                locStateInput.placeholder = "Error loading states";
+            }
+        }
+
+        let stateCodeMap = {}; // Stores "State Name" -> "State Code" for current country
+
+        // 3. Fetch Cities
+        async function fetchCities(countryName, stateName) {
+            locCityInput.placeholder = "Loading cities...";
+            locCityInput.value = ""; // Reset
+
+            try {
+                const response = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ country: countryName, state: stateName })
+                });
+                const result = await response.json();
+                if (!result.error) {
+                    const cities = result.data;
+                    stateCityMap[stateName] = cities;
+                    locCityInput.placeholder = "Type to search city...";
+                } else {
+                    locCityInput.placeholder = "No cities found";
+                }
+            } catch (error) {
+                console.error("Error fetching cities:", error);
+                locCityInput.placeholder = "Error loading cities";
+            }
+        }
+
+        // 4. Fetch Pincodes
+        async function fetchPincodes(countryName, stateName, cityName) {
+            locPincodeInput.placeholder = "Loading pincodes...";
+            locPincodeInput.value = ""; // Reset
+            currentPincodes = [];
+
+            // Get ISO Code
+            let iso2 = "";
+            try {
+                // Optimization: Maybe cache this map later.
+                const response = await fetch('https://countriesnow.space/api/v0.1/countries/iso', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ country: countryName })
+                });
+                const result = await response.json();
+                if (!result.error) {
+                    iso2 = result.data.Iso2;
+                }
+            } catch (e) {
+                console.error("Error getting ISO code", e);
+            }
+
+            if (!iso2) {
+                locPincodeInput.placeholder = "Enter pincode manually";
+                return;
+            }
+
+            // India-Specific Logic (Data from api.postalpincode.in is much better for IN)
+            if (iso2 === 'IN') {
+                try {
+                    // Normalize city name (remove diacritics if any, though simple replace might handle common cases)
+                    // The api.postalpincode.in searches by Post Office name, which often matches City name.
+                    const searchCity = cityName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    const response = await fetch(`https://api.postalpincode.in/postoffice/${searchCity}`);
+                    const data = await response.json();
+
+                    if (data && data[0].Status === 'Success') {
+                        const postOffices = data[0].PostOffice;
+                        // Format: "Pincode - Area Name"
+                        const pincodes = postOffices.map(po => `${po.Pincode} - ${po.Name}`);
+                        currentPincodes = [...new Set(pincodes)]; // Unique
+                        locPincodeInput.placeholder = "Type to search pincode...";
+                        return; // Success for India
+                    }
+                } catch (err) {
+                    console.error("India API failed", err);
+                }
+            }
+
+            // Fallback / Standard Logic (Zippopotam)
+            try {
+                // Determine State identifier: Code if available (US requires it), else Name
+                let stateParam = stateName;
+                if (stateCodeMap[stateName]) {
+                    stateParam = stateCodeMap[stateName];
+                }
+
+                const url = `https://api.zippopotam.us/${iso2}/${stateParam}/${cityName}`;
+                const response = await fetch(url);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.places) {
+                        const pincodes = data.places.map(p => `${p['post code']} - ${p['place name']}`);
+                        currentPincodes = [...new Set(pincodes)];
+                        locPincodeInput.placeholder = "Type to search pincode...";
+                    } else {
+                        locPincodeInput.placeholder = "No pincodes found (Manual entry)";
+                    }
+                } else {
+                    // Try without state for some countries? Zippopotam structure is fixed though.
+                    locPincodeInput.placeholder = "Enter pincode manually";
+                }
+            } catch (error) {
+                console.error("Error fetching pincodes:", error);
+                locPincodeInput.placeholder = "Enter pincode manually";
+            }
+        }
+        let currentPincodes = []; // store fetched pincodes
+
+        // Generic Autocomplete Function
+        function setupAutocomplete(inputElement, listElement, getDataCallback, onSelectCallback) {
+            function populateList(filterText = '') {
+                const dataArray = getDataCallback();
+                listElement.innerHTML = '';
+
+                if (!dataArray) {
+                    listElement.style.display = 'none';
+                    return;
+                }
+
+                const matches = filterText
+                    ? dataArray.filter(c => c.toLowerCase().includes(filterText.toLowerCase()))
+                    : dataArray;
+
+                if (matches.length > 0) {
+                    matches.forEach(match => {
+                        const div = document.createElement('div');
+                        div.className = 'country-item';
+                        div.textContent = match;
+                        div.onclick = function () {
+                            inputElement.value = match;
+                            listElement.style.display = 'none';
+                            if (onSelectCallback) onSelectCallback(match);
+                        };
+                        listElement.appendChild(div);
+                    });
+                    listElement.style.display = 'block';
+                } else {
+                    listElement.style.display = 'none';
+                }
+            }
+
+            inputElement.addEventListener('input', function () {
+                populateList(this.value);
+            });
+
+            inputElement.addEventListener('focus', function () {
+                populateList(this.value);
+            });
+
+            // Close list if clicked outside
+            document.addEventListener('click', function (e) {
+                if (e.target !== inputElement) {
+                    listElement.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize Autocomplete with Data Getters
+
+        // Country: Data is allCountries. On Select -> Fetch States
+        setupAutocomplete(locCountryInput, countryListDiv, () => allCountries, (selectedCountry) => {
+            fetchStates(selectedCountry);
+        });
+
+        // State: Data is from countryStateMap based on selected country
+        setupAutocomplete(locStateInput, stateListDiv, () => {
+            const c = locCountryInput.value;
+            return countryStateMap[c] || [];
+        }, (selectedState) => {
+            const c = locCountryInput.value;
+            fetchCities(c, selectedState);
+            // Also Clear Pincodes
+            currentPincodes = [];
+            locPincodeInput.value = "";
+        });
+
+        // City: Data is from stateCityMap. On Select -> Try Fetch Pincodes
+        setupAutocomplete(locCityInput, cityListDiv, () => {
+            const s = locStateInput.value;
+            return stateCityMap[s] || [];
+        }, (selectedCity) => {
+            const c = locCountryInput.value;
+            const s = locStateInput.value;
+            fetchPincodes(c, s, selectedCity);
+        });
+
+        // Pincode: Data is currentPincodes
+        setupAutocomplete(locPincodeInput, pincodeListDiv, () => currentPincodes, null);
+
+        // Close modal on outside click
+        window.addEventListener('click', function (e) {
+            const modal = document.getElementById('locationModal');
+            if (e.target === modal) {
+                closeLocationModal();
+            }
+        });
+    </script>
+    </script>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="location-modal-overlay">
+        <div class="location-modal" style="max-width: 450px;">
+            <h3>Confirm Task</h3>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p id="confMessage" style="font-size: 16px; color: #333; margin-bottom: 20px;">
+                    You are about to start a new rank check.
+                </p>
+                <div
+                    style="background: #f9fafb; padding: 15px; border-radius: 8px; text-align: left; font-size: 14px; margin-bottom: 20px; border: 1px solid #e5e7eb;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: #6b7280;">Credits Required:</span>
+                        <span id="confCreditsUsed" style="font-weight: 600; color: #ef4444;">0</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="color: #6b7280;">Credits Remaining:</span>
+                        <span id="confCreditsRemaining" style="font-weight: 600; color: #333;">0</span>
+                    </div>
+                    <div style="border-top: 1px solid #e5e7eb; margin: 8px 0;"></div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6b7280;">Balance After:</span>
+                        <span id="confCreditsBalance" style="font-weight: 600; color: #00b29d;">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loc-actions" style="justify-content: center; gap: 15px;">
+                <button type="button" class="rank-btn rank-btn-reset"
+                    onclick="document.getElementById('confirmationModal').style.display='none'"
+                    style="width: 156px; height: 36px; display: inline-flex; justify-content: center; align-items: center; padding: 0; font-family: 'Lexend Deca', sans-serif; font-size: 13px; font-weight: 500; line-height: 20px; border-radius: 8px;">Cancel</button>
+                <button type="button" id="confProceedBtn" class="rank-btn rank-btn-submit"
+                    style="width: 156px; height: 36px; display: inline-flex; justify-content: center; align-items: center; padding: 0; font-family: 'Lexend Deca', sans-serif; font-size: 13px; font-weight: 500; line-height: 20px; border-radius: 8px;">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="application/json" id="credits-data">
+        {{ credits| tojson }}
+    </script>
+    <script>
+        const userCredits = JSON.parse(document.getElementById('credits-data').textContent); // Inject credits from server
+
+        function confirmStartTask() {
+            const form = document.querySelector('form');
+            const keywordsField = document.getElementById('keywordsField');
+            const fileInput = document.getElementById('file_upload');
+            const locInput = document.getElementById('mainLocationInput');
+
+            // Set custom validation message if location is empty
+            if (!locInput.value.trim()) {
+                locInput.setCustomValidity("Please select location");
+            } else {
+                locInput.setCustomValidity("");
+            }
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Manual keywords count
+            let manualCount = 0;
+            if (keywordsField.value.trim()) {
+                manualCount = keywordsField.value.trim().split(',').length;
+            }
+
+            if (fileInput && fileInput.files.length > 0) {
+                // File upload case - Read file first
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const text = e.target.result;
+                    // Count lines that are not empty
+                    const lines = text.split(/\r\n|\r|\n/).filter(line => line.trim() !== "").length;
+
+                    const totalCount = manualCount + lines;
+                    showConfirmationModal(totalCount);
+                };
+
+                reader.readAsText(file);
+            } else {
+                // Only manual keywords
+                if (manualCount === 0) {
+                    showAlert("Input Error", "Please add at least one keyword or upload a file.");
+                    return;
+                }
+                showConfirmationModal(manualCount);
+            }
+        }
+
+        function showConfirmationModal(count) {
+            const remaining = userCredits.remaining;
+            const balance = remaining - count;
+
+            document.getElementById('confCreditsUsed').innerText = count;
+            document.getElementById('confCreditsRemaining').innerText = remaining;
+            document.getElementById('confCreditsBalance').innerText = balance;
+
+            const form = document.querySelector('form');
+
+            if (balance < 0) {
+                document.getElementById('confMessage').innerText = "Insufficient Credits! Please recharge.";
+                const btn = document.getElementById('confProceedBtn');
+                btn.innerText = "Recharge Credits";
+                btn.onclick = function () { window.location.href = '/settings'; };
+                btn.style.background = '#ef4444';
+            } else {
+                document.getElementById('confMessage').innerText = "Are you sure you want to proceed?";
+                const btn = document.getElementById('confProceedBtn');
+                btn.innerText = "Proceed & Run";
+                btn.style.background = '#00b29d';
+                btn.onclick = function () {
+                    document.getElementById('confirmationModal').style.display = 'none';
+                    form.submit();
+                };
+            }
+            document.getElementById('confirmationModal').style.display = 'flex';
+        }
+    </script>
+    <!-- Buy Credits Modal (Redesigned) -->
+    <div id="buyCreditsModal" class="logout-overlay"
+        style="display: none; z-index: 9999; align-items: flex-start; padding-top: 50px; overflow-y: auto;">
+        <div class="logout-modal" style="width: 700px; max-width: 95%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0;">Upgrade Your Plan</h2>
+                <button onclick="document.getElementById('buyCreditsModal').style.display='none'"
+                    style="background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
+            </div>
+
+            <!-- Tabs -->
+            <div style="display: flex; gap: 20px; border-bottom: 1px solid #eee; margin-bottom: 20px;">
+                <div id="tabPayGo" onclick="switchTab('paygo')"
+                    style="padding: 10px 0; border-bottom: 2px solid #00b29d; color: #00b29d; font-weight: 600; cursor: pointer;">
+                    Pay As You Go</div>
+                <div id="tabMonthly" onclick="switchTab('monthly')"
+                    style="padding: 10px 0; border-bottom: 2px solid transparent; color: #666; cursor: pointer;">Monthly
+                    Subscription</div>
+            </div>
+
+            <!-- Pay As You Go Content -->
+            <div id="contentPayGo" style="display: block;">
+                <p style="color: #666; margin-bottom: 15px;">One-time purchase. Credits never expire.</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <!-- Micro Pack -->
+                    <div class="plan-card" onclick="selectPlan(this, 'Micro', 5)">
+                        <div style="font-weight: 700; font-size: 18px;">Micro</div>
+                        <div style="color: #666; font-size: 13px; margin: 5px 0;">500 Credits</div>
+                        <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$5</div>
+                        <div style="font-size: 12px; color: #999;">$0.01 / kw</div>
+                    </div>
+                    <!-- Starter Pack -->
+                    <div class="plan-card selected-plan" onclick="selectPlan(this, 'Starter', 15)">
+                        <div
+                            style="background: #00b29d; color: white; border-radius: 4px; padding: 2px 6px; font-size: 10px; position: absolute; top: 10px; right: 10px;">
+                            POPULAR</div>
+                        <div style="font-weight: 700; font-size: 18px;">Starter</div>
+                        <div style="color: #666; font-size: 13px; margin: 5px 0;">2,500 Credits</div>
+                        <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$15</div>
+                        <div style="font-size: 12px; color: #999;">$0.006 / kw</div>
+                    </div>
+                    <!-- Pro Pack -->
+                    <div class="plan-card" onclick="selectPlan(this, 'Pro', 50)">
+                        <div style="font-weight: 700; font-size: 18px;">Pro</div>
+                        <div style="color: #666; font-size: 13px; margin: 5px 0;">10,000 Credits</div>
+                        <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$50</div>
+                        <div style="font-size: 12px; color: #999;">$0.005 / kw</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Content -->
+            <div id="contentMonthly" style="display: none;">
+                <p style="color: #666; margin-bottom: 15px;">Auto-refill every month. Cancel anytime. Best value.</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <!-- Freelancer -->
+                    <div class="plan-card" onclick="selectPlan(this, 'Freelancer Monthly', 12)">
+                        <div style="font-weight: 700; font-size: 18px;">Freelancer</div>
+                        <div style="color: #666; font-size: 13px; margin: 5px 0;">3,000 Credits/mo</div>
+                        <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$12<span
+                                style="font-size:12px; color:#666;">/mo</span></div>
+                        <div style="font-size: 12px; color: #999;">$0.004 / kw</div>
+                    </div>
+                    <!-- Agency -->
+                    <div class="plan-card" onclick="selectPlan(this, 'Agency Monthly', 35)">
+                        <div style="font-weight: 700; font-size: 18px;">Agency</div>
+                        <div style="color: #666; font-size: 13px; margin: 5px 0;">10,000 Credits/mo</div>
+                        <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$35<span
+                                style="font-size:12px; color:#666;">/mo</span></div>
+                        <div style="font-size: 12px; color: #999;">$0.0035 / kw</div>
+                    </div>
+                    <!-- Enterprise -->
+                    <div class="plan-card" onclick="selectPlan(this, 'Enterprise Monthly', 100)">
+                        <div style="font-weight: 700; font-size: 18px;">Big Biz</div>
+                        <div style="color: #666; font-size: 13px; margin: 5px 0;">35,000 Credits/mo</div>
+                        <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$100<span
+                                style="font-size:12px; color:#666;">/mo</span></div>
+                        <div style="font-size: 12px; color: #999;">$0.0028 / kw</div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .plan-card {
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 20px;
+                    text-align: center;
+                    cursor: pointer;
+                    position: relative;
+                    transition: all 0.2s;
+                }
+
+                .plan-card:hover {
+                    border-color: #00b29d;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                }
+
+                .selected-plan {
+                    border: 2px solid #00b29d;
+                    background: #f0fdfb;
+                }
+            </style>
+
+            <div
+                style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 14px; color: #666;">
+                    Selected: <strong id="selectedPlanName">Starter</strong> - <span id="selectedPlanPrice">$15</span>
+                </div>
+                <div class="logout-actions" style="margin-top: 0;">
+                    <button class="btn-cancel"
+                        onclick="document.getElementById('buyCreditsModal').style.display='none'">Cancel</button>
+                    <button class="btn-logout" style="background: #007bff;" onclick="simulatePayment()">Proceed to
+                        Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Simulation Toast -->
+    <div id="paymentToast"
+        style="display:none; position: fixed; top: 20px; right: 20px; background: #fff; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border-left: 4px solid #00b29d; z-index: 10000; animation: slideIn 0.3s ease;">
+        <div style="font-weight: 600; margin-bottom: 5px;">Redirecting to Payment...</div>
+        <div style="font-size: 13px; color: #666;">Connecting to secure gateway.</div>
+    </div>
+
+    <script>
+        function openBuyCreditsModal() { document.getElementById('buyCreditsModal').style.display = 'flex'; }
+
+        function switchTab(tab) {
+            if (tab === 'paygo') {
+                document.getElementById('tabPayGo').style.borderBottomColor = '#00b29d';
+                document.getElementById('tabPayGo').style.color = '#00b29d';
+                document.getElementById('tabMonthly').style.borderBottomColor = 'transparent';
+                document.getElementById('tabMonthly').style.color = '#666';
+                document.getElementById('contentPayGo').style.display = 'block';
+                document.getElementById('contentMonthly').style.display = 'none';
+
+                // Reset selection to default
+                const defaultCard = document.querySelector('#contentPayGo .plan-card:nth-child(2)'); // Starter
+                if (defaultCard) selectPlan(defaultCard, 'Starter', 15);
+            } else {
+                document.getElementById('tabMonthly').style.borderBottomColor = '#00b29d';
+                document.getElementById('tabMonthly').style.color = '#00b29d';
+                document.getElementById('tabPayGo').style.borderBottomColor = 'transparent';
+                document.getElementById('tabPayGo').style.color = '#666';
+                document.getElementById('contentMonthly').style.display = 'block';
+                document.getElementById('contentPayGo').style.display = 'none';
+
+                // Reset selection to default
+                const defaultCard = document.querySelector('#contentMonthly .plan-card:nth-child(1)'); // Freelancer
+                if (defaultCard) selectPlan(defaultCard, 'Freelancer Monthly', 12);
+            }
+        }
+
+        function selectPlan(el, name, price) {
+            document.querySelectorAll('.plan-card').forEach(c => {
+                c.classList.remove('selected-plan');
+                c.style.borderWidth = '1px';
+                c.style.background = 'white';
+            });
+            el.classList.add('selected-plan');
+            el.style.borderWidth = '2px';
+            el.style.background = '#f0fdfb';
+
+            document.getElementById('selectedPlanName').innerText = name;
+            document.getElementById('selectedPlanPrice').innerText = '$' + price;
+        }
+
+        function simulatePayment() {
+            const planName = document.getElementById('selectedPlanName').innerText;
+            const price = document.getElementById('selectedPlanPrice').innerText;
+
+            // Determine credit amount based on plan name
+            let credits = 0;
+            if (planName.includes('Micro')) credits = 500;
+            else if (planName.includes('Starter')) credits = 2500;
+            else if (planName.includes('Pro')) credits = 10000;
+            else if (planName.includes('Freelancer')) credits = 3000;
+            else if (planName.includes('Agency')) credits = 10000;
+            else if (planName.includes('Big Biz')) credits = 35000;
+
+            showConfirm(
+                "Confirm Payment",
+                "Proceed to Secure Payment Gateway for " + planName + "?",
+                function () {
+                    const cleanPrice = price.replace('$', '').replace('/mo', '');
+                    window.location.href = `/payment?plan=${encodeURIComponent(planName)}&price=${cleanPrice}&credits=${credits}`;
+                }
+            );
+        }
+    </script>
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="logout-overlay">
+        <div class="logout-modal">
+            <h2>Are you sure you want to log out?</h2>
+            <p>You'll be signed out from your current session.</p>
+
+            <div class="logout-actions">
+                <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/logout.js"></script>
+    <script>
+        // Search Redirection
+        const dashboardSearchInput = document.getElementById('dashboardSearchInput');
+        if (dashboardSearchInput) {
+            dashboardSearchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        // Redirect to dashboard with search query
+                        // Assuming dashboard supports ?search= query param or we can use hash
+                        // Since dashboard implementation uses JS filter, hash or query param read is needed.
+                        // Let's use query param for now and ensure dashboard reads it.
+                        window.location.href = `/dashboard?search=${encodeURIComponent(query)}`;
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

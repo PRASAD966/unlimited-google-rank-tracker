@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Rankplex</title>
+   <meta name="robots" content="noindex,nofollow">
+   <link rel="icon" type="image/svg+xml" href="./images/nice-logo.svg">
+   <link rel="stylesheet" href="./css/owl.carousel.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="./css/style.css">
+   <style>
+      @keyframes blinkRed {
+
+         0%,
+         100% {
+            color: inherit;
+         }
+
+         50% {
+            color: #ef4444;
+         }
+      }
+
+      @keyframes outlineBlink {
+
+         0%,
+         100% {
+            outline: none;
+         }
+
+         50% {
+            outline: 2px solid #ef4444;
+            outline-offset: 2px;
+         }
+      }
+
+      .blink-error label {
+         animation: blinkRed 0.4s ease-in-out 3;
+      }
+
+      .blink-error input[type="checkbox"] {
+         animation: outlineBlink 0.4s ease-in-out 3;
+      }
+   </style>
+</head>
+
+<body>
+
+   <div class="sign-in-form">
+      <div class="sign-in-blk">
+         <div class="form-logo">
+            <a href="/">
+               <img src="./images/nice-logo.svg" alt="Logo">
+            </a>
+         </div>
+         <div class="text-heading">Create a Free Account</div>
+         <p class="frm-text">No credit card required</p>
+         <form method="post" action="/signup">
+            <div class="fld-box">
+               <div class="name-field">
+                  <label>Full Name</label>
+                  <input type="text" name="fullname" placeholder="Enter your full name" required>
+               </div>
+               <div class="email-field">
+                  <label>Email Address</label>
+                  <input type="email" name="email" placeholder="Enter your email address" required>
+               </div>
+            </div>
+            <div class="password-field">
+               <label>Password</label>
+               <div style="position: relative;">
+                  <input type="password" id="password" name="password" placeholder="Enter your password" required
+                     pattern="(?=.*[!@#$%^&*(),.?:{}|<>]).{7,}"
+                     title="Must be more than 6 characters and contain at least one special character"
+                     style="padding-right: 40px;">
+                  <span onclick="togglePasswordVisibility('password', this)"
+                     style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+                     <!-- Using inline SVG for reliability since images might be missing -->
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                     </svg>
+                  </span>
+               </div>
+               <div id="password-error" style="color: #ff4444; font-size: 13px; margin-top: 5px; display: none;"></div>
+            </div>
+            <div class="password-field">
+               <label>Confirm Password</label>
+               <div style="position: relative;">
+                  <input type="password" id="confirm_password" name="confirm_password"
+                     placeholder="Re-enter your password" required style="padding-right: 40px;">
+                  <span onclick="togglePasswordVisibility('confirm_password', this)"
+                     style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                     </svg>
+                  </span>
+               </div>
+            </div>
+            <div class="sumbit-field">
+               <input type="submit" value="Sign Up">
+            </div>
+            <div class="form-links">
+               <div class="checkbox-field">
+                  <input type="checkbox" id="check" required>
+                  <label for="check">By creating an account, you agree to our <a href="/terms" target="_blank">Terms of
+                        Use</a> and <a href="/privacy" target="_blank">Privacy Policy.</a></label>
+               </div>
+            </div>
+            <div class="divider">Or</div>
+            <div class="google-btn">
+               <div class="google-img">
+                  <img src="./images/google-img.webp" alt="google" width="23" height="20">
+               </div>
+               <div class="google-cnt">
+                  <a href="javascript:void(0)" onclick="handleGoogleSignup()">sign up with google</a>
+               </div>
+            </div>
+            <div class="sign-up-link">
+               <p>Already have an Account</p>
+               <a href="/login">Sign in</a>
+            </div>
+         </form>
+      </div>
+   </div>
+
+   <!-- Error Modal -->
+   <div id="errorModal" class="modal"
+      style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+      <div class="modal-content"
+         style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 400px; border-radius: 8px; text-align: center;">
+         <p id="modalErrorMessage" style="color: red; font-size: 16px; margin-bottom: 20px;">
+            {{ error if error else '' }}
+         </p>
+         <button onclick="document.getElementById('errorModal').style.display='none'"
+            style="cursor: pointer; padding: 10px 20px; border: none; background-color: #007f5f; color: #fff; border-radius: 5px;">OK</button>
+      </div>
+   </div>
+
+   <script src="./js/jquery.min.js"></script>
+   <script src="./js/owl.carousel.min.js"></script>
+   <script src="./js/common.js"></script>
+   <script>
+      function togglePasswordVisibility(inputId, iconSpan) {
+         const input = document.getElementById(inputId);
+         // Simple toggle for SVG stroke color or slash
+         if (input.type === "password") {
+            input.type = "text";
+            iconSpan.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007f5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye-off"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+         } else {
+            input.type = "password";
+            iconSpan.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+         }
+      }
+
+      function handleGoogleSignup() {
+         const checkbox = document.getElementById('check');
+         if (!checkbox.checked) {
+            const checkboxField = checkbox.closest('.checkbox-field');
+            if (checkboxField) {
+               checkboxField.classList.remove('blink-error');
+               // Trigger reflow to restart animation
+               void checkboxField.offsetWidth;
+               checkboxField.classList.add('blink-error');
+            }
+            // Add a small delay so the user sees the blink before the modal covers it
+            setTimeout(() => {
+               showAlert("Terms Error", "Please accept the Terms of Use and Privacy Policy to proceed.");
+            }, 100);
+            return;
+         }
+         window.location.href = "/login/google";
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+         // Check for server-side error
+         const serverError = "{{ error }}";
+         if (serverError && serverError !== "{" + "{ error }" + "}" && serverError !== "{" + "{ error if error else '' }" + "}") {
+            document.getElementById('errorModal').style.display = 'block';
+         }
+
+         const passwordInput = document.getElementById('password');
+         // If ID not found (signup might not have id="password" originally), try by name or add ID
+         // I added id="password" in the HTML part above.
+         const errorDiv = document.getElementById('password-error');
+
+         // Password validation removed as per user request
+         /* 
+         if (passwordInput && errorDiv) {
+            passwordInput.addEventListener('input', function () {
+               const val = this.value;
+               let msg = "";
+               if (val.length > 0) {
+                  if (val.length <= 6 || !/[!@#$%^&*(),.?":{}|<>]/.test(val)) {
+                     msg = "Password must be more than 6 characters and contain at least one special character.";
+                  }
+               }
+
+               if (msg) {
+                  errorDiv.textContent = msg;
+                  errorDiv.style.display = 'block';
+               } else {
+                  errorDiv.style.display = 'none';
+               }
+            });
+         }
+         */
+      });
+   </script>
+</body>
+
+</html>

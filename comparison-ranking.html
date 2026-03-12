@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankplex</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/svg+xml" href="./images/nice-logo.svg">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link rel="stylesheet" href="./css/style.css?v=2">
+    <link rel="stylesheet" href="./css/logout.css">
+</head>
+
+<body class="preload">
+
+    <!-- Fixed toggle button (visible when sidebar is hidden) -->
+    <div class="sidebar-toggle-btn" onclick="toggleDashboardSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="13 17 18 12 13 7"></polyline>
+            <polyline points="6 17 11 12 6 7"></polyline>
+        </svg>
+    </div>
+
+    <div class="dashboard">
+        <!-- SIDEBAR  -->
+        <div class="dashboard-menu">
+            <div class="dashboard-logo-blk">
+                <div class="dashboard-logo">
+                    <img src="./images/nice-logo.svg" alt="nice-logo" width="69" height="60">
+                </div>
+                <div class="dashboard-toggle" onclick="toggleDashboardSidebar()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="dashboard-links">
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/dashboard-icn.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/dashboard">Dashboard</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/rank-check-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/rank-check">Create New Project</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/projects-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/projects">Running</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/history-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/history">History</a></div>
+                </div>
+
+
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/settings-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/settings">Settings</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/log-out-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="javascript:void(0)" onclick="openLogoutModal()">Log out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE CONTENT -->
+        <div class="dashboard-main-wrapper">
+
+            <!-- Top Header -->
+            <div class="dashboard-cnt">
+
+                <div class="dashboard-cnt-top-blk">
+                    <input type="text" placeholder="Search a project...">
+                </div>
+
+                <div class="dashboard-credentials-blk">
+
+                    <!-- Notification removed -->
+
+                    <div id="toastContainer" class="toast-container"></div>
+
+                    <a href="/rank-check"
+                        style="background: #00b29d; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; display: inline-block;">Create
+                        New Project</a>
+
+
+
+                </div>
+
+            </div>
+            <div class="dashboard-main">
+                <div class="rank-check-blk">
+                    <div class="rank-check-lft-blk">
+                        <h2 class="main-heading">Keyword Ranking Trend</h2>
+                    </div>
+                    <div class="rank-check-rgt-blk">
+                    </div>
+                </div>
+
+                <div class="comparison-summary">
+                    <div class="summary-item">
+                        <label>Project Name</label>
+                        <span>{{ comparison_params.project_name or 'No Project' }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <label>Keyword</label>
+                        <span>{{ comparison_params.keyword }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <label>URL</label>
+                        <span>{{ comparison_params.target_domain }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <label>From Date</label>
+                        <span>{{ comparison_params.from_date or 'Beginning' }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <label>To Date</label>
+                        <span>{{ comparison_params.to_date or 'Now' }}</span>
+                    </div>
+                </div>
+
+                <div class="ranking-chart-container">
+                    <canvas id="rankingChart" height="100"></canvas>
+                </div>
+
+                <div class="dashboard-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Rank</th>
+                                <th>Page</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if ranking_trend %}
+                            {% for trend in ranking_trend %}
+                            <tr>
+                                <td>{{ trend.display_date }}</td>
+                                <td>{{ '#' ~ trend.rank if trend.rank else 'N/A' }}</td>
+                                <td>{{ trend.page or 'N/A' }}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">No data to display for the selected
+                                    criteria.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/owl.carousel.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script id="trendDataJSON" type="application/json">{{ ranking_trend | tojson | safe }}</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('rankingChart').getContext('2d');
+
+            // Prepare data from script tag
+            const trendData = JSON.parse(document.getElementById('trendDataJSON').textContent);
+
+            if (trendData && trendData.length > 0) {
+                const labels = trendData.map(item => {
+                    const d = new Date(item.timestamp);
+                    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+                });
+                const ranks = trendData.map(item => (item.rank !== null && item.rank !== undefined && item.rank !== '') ? parseInt(item.rank) : null);
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Rank',
+                            data: ranks,
+                            borderColor: '#00B29D',
+                            backgroundColor: 'rgba(0, 178, 157, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#00B29D',
+                            spanGaps: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                reverse: true,
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: function (value) {
+                                        return 'Rank ' + value;
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="logout-overlay">
+        <div class="logout-modal">
+            <h2>Are you sure you want to log out?</h2>
+            <p>You'll be signed out from your current session.</p>
+
+            <div class="logout-actions">
+                <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/logout.js"></script>
+</body>
+
+</html>

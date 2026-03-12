@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankplex</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/svg+xml" href="./images/nice-logo.svg">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+        <!-- SIDEBAR  -->
+        <div class="dashboard-menu">
+            <div class="dashboard-logo-blk">
+                <div class="dashboard-logo">
+                    <img src="./images/nice-logo.svg" alt="Rankplex" width="69" height="60">
+                </div>
+                <div class="dashboard-toggle" onclick="toggleDashboardSidebar()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="dashboard-links">
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/dashboard-icn.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/dashboard">Dashboard</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/rank-check-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/rank-check">Create New Project</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk active">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/projects-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/projects">Running</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/history-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/history">History</a></div>
+                </div>
+
+
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/settings-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/settings">Settings</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/log-out-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/logout">Log out</a></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE CONTENT -->
+        <div class="dashboard-main-wrapper">
+
+            <!-- Top Header -->
+            <div class="dashboard-cnt">
+
+                <div class="dashboard-cnt-top-blk">
+                    <input type="text" placeholder="Search a project...">
+                </div>
+
+                <div class="dashboard-credentials-blk">
+
+                    <!-- Notification removed -->
+
+                    <a href="/rank-check"
+                        style="background: #00b29d; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; display: inline-block;">Create
+                        New Project</a>
+
+                    <a href="/settings" class="dashboard-log-in-blk" style="text-decoration: none; color: inherit;">
+                        <div class="dashboard-log-in-blk-img">
+                            {% if profile_image %}
+                            {% if profile_image.startswith('http') %}
+                            <img src="{{ profile_image }}"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            {% else %}
+                            <img src="/static/uploads/{{ profile_image }}"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            {% endif %}
+                            {% else %}
+                            <div class="initial-avatar">{{ display_name[0] | upper }}</div>
+                            {% endif %}
+                        </div>
+                        <!-- Name removed -->
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- MAIN BODY -->
+            <div class="dashboard-main">
+                <div class="fld-box">
+                    <div class="left-blk">
+                        <h2 class="main-heading">Project Details</h2>
+                    </div>
+                    <div class="rgt-blk">
+                        <div class="projt-btn">
+                            <a href="rank-check.html" class="cmn-btn">Edit Project</a>
+                        </div>
+                        <div class="rank-btn">
+                            <a href="rank-check.html" class="cmn-btn">Keyword Rank Check</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="projects-rank-row">
+                    <div class="projects-rank-box">
+                        <p class="project-title">Project Name</p>
+                        <span class="stats-note">Product Pages SEO</span>
+                    </div>
+                    <div class="projects-rank-box">
+                        <p class="project-title">URL</p>
+                        <span class="stats-note">www.example.com</span>
+                    </div>
+                    <div class="projects-rank-box">
+                        <p class="project-title">Created on</p>
+                        <span class="stats-note">3 Nov 2025</span>
+                    </div>
+                </div>
+
+                <!-- Tabs Section -->
+                <div class="tab-section">
+                    <div class="tab-btn-group">
+                        <div class="tab-btn tab-btn-active">Recent Checks</div>
+                        <div class="tab-btn">Keywords Overview</div>
+                    </div>
+                    <div class="tab-content-area">
+                        <div class="tab-pane tab-pane-active">
+                            <div class="sales-representative-sec">
+
+                                <div class="dashboard-table recent">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Date & Time</th>
+                                                <th>Keywords Checked</th>
+                                                <th>Top Ranking Keywords</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">3 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Date & Time">23 Nov 2025 – 11:42 AM</td>
+                                                <td data-label="Keywords Checked">40</td>
+                                                <td data-label="Top Ranking Keywords">4 → #3</td>
+                                                <td data-label="Actions" class="actions-icon">
+                                                    <img src="./images/view-img.svg">
+                                                    <img src="./images/download-img.svg">
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane">
+                            <div class="sales-representative-sec">
+
+                                <div class="dashboard-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Keyword</th>
+                                                <th>Last Checked</th>
+                                                <th>Latest Rank</th>
+                                                <th>Best Rank</th>
+                                                <th>Avg Rank</th>
+                                                <th>status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#1</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#2</td>
+                                                <td data-label="status" class="improved">Improved</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#1</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#5</td>
+                                                <td data-label="status" class="stable">Stable</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#5</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#2</td>
+                                                <td data-label="status" class="declined">Declined</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#1</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#4</td>
+                                                <td data-label="status" class="improved">Improved</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#1</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#12</td>
+                                                <td data-label="status" class="stable">Stable</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#1</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#11</td>
+                                                <td data-label="status" class="improved">Improved</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#3</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#9</td>
+                                                <td data-label="status" class="declined">Declined</td>
+                                            </tr>
+                                            <tr>
+
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#1</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#20</td>
+                                                <td data-label="status" class="improved">Improved</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#1</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#6</td>
+                                                <td data-label="status" class="stable">Stable</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#1</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#6</td>
+                                                <td data-label="status" class="improved">Improved</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-label="Keyword">Sample keyword</td>
+                                                <td data-label="Last Checked">23 Nov 2025</td>
+                                                <td data-label="Latest Rank">#10</td>
+                                                <td data-label="Best Rank">#1</td>
+                                                <td data-label="Avg Rank">#4</td>
+                                                <td data-label="status" class="declined">Declined</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/owl.carousel.min.js"></script>
+    <script src="./js/common.js"></script>
+
+</body>
+
+</html>

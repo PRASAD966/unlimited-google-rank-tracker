@@ -1,0 +1,26 @@
+services:
+  app-8005:
+    build: .
+    restart: always
+    shm_size: '2gb'
+    # 'ports' is ignored in network_mode: host, so we remove it.
+    environment:
+      - PORT=8005  # Tell the app to listen on 8005 directly
+      - BRAVE_PATH=/usr/bin/brave-browser
+      - EXTENSION_PATH=/app/extensions/raptor_unpacked
+      - MAX_CONCURRENT_TASKS=40
+      - DB_HOST=127.0.0.1 # Now we can access host localhost directly
+      - DB_USER=rankplexuser
+      - DB_PASS=rankplex@2025
+      - DB_NAME=rankplexdb
+      - HEADLESS_MODE=true
+    volumes:
+      - ./:/app
+    command: ["bash", "./start.sh"]
+    network_mode: "host" # Share network namespace with host
+    ipc: host
+    tty: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined

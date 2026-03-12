@@ -1,0 +1,83 @@
+﻿======================================================================
+DATAIMPULSE ROTATING PROXY TEST
+======================================================================
+
+Proxy Server: gw.dataimpulse.com
+Proxy Port: 823
+Username: 0e56922652ab25f2296d
+Password: ****************
+
+======================================================================
+TESTING CONNECTION
+======================================================================
+
+Test 1: Checking your IP address via proxy...
+python : Traceback (most 
+recent call last):
+At line:1 char:1
++ python 
+test_dataimpulse_proxy.py 
+2>&1 | Out-File -FilePath 
+proxy_test ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (Traceba  
+  ck (most recent call las   
+ t)::String) [], RemoteEx    
+ception
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+  File "C:\Users\user\Downloa
+ds\finalrank\test_dataimpulse
+_proxy.py", line 40, in 
+<module>
+    print(f"\u2705 SUCCESS! 
+Your IP via proxy: 
+{ip_data['ip']}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^
+  File "C:\Python314\Lib\enco
+dings\cp1252.py", line 19, 
+in encode
+    return codecs.charmap_enc
+ode(input,self.errors,encodin
+g_table)[0]
+           ~~~~~~~~~~~~~~~~~~
+~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^
+UnicodeEncodeError: 
+'charmap' codec can't encode 
+character '\u2705' in 
+position 0: character maps 
+to <undefined>
+
+During handling of the above 
+exception, another exception 
+occurred:
+
+Traceback (most recent call 
+last):
+  File "C:\Users\user\Downloa
+ds\finalrank\test_dataimpulse
+_proxy.py", line 77, in 
+<module>
+    print(f"\n\u274c ERROR: 
+{e}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\enco
+dings\cp1252.py", line 19, 
+in encode
+    return codecs.charmap_enc
+ode(input,self.errors,encodin
+g_table)[0]
+           ~~~~~~~~~~~~~~~~~~
+~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^
+UnicodeEncodeError: 
+'charmap' codec can't encode 
+character '\u274c' in 
+position 2: character maps 
+to <undefined>

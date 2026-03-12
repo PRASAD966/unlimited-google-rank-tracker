@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankplex</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/svg+xml" href="./images/nice-logo.svg">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="preload">
+
+    <div class="dashboard">
+        <!-- SIDEBAR  -->
+        <div class="dashboard-menu">
+            <div class="dashboard-logo-blk">
+                <div class="dashboard-logo">
+                    <img src="./images/nice-logo.svg" alt="Rankplex" width="69" height="60">
+                </div>
+                <div class="dashboard-toggle" onclick="toggleDashboardSidebar()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="dashboard-links">
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/dashboard-icn.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="dashboard.html">Dashboard</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/rank-check-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="/rank-check">Create New Project</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/projects-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="projects.html">Running</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/history-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="history.html">History</a></div>
+                </div>
+
+
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/settings-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="settings.html">Settings</a></div>
+                </div>
+
+                <div class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/log-out-img.svg"></div>
+                    <div class="dashboard-cnt-blk"><a href="#">Log out</a></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE CONTENT -->
+        <div class="dashboard-main-wrapper">
+
+            <!-- Top Header -->
+            <div class="dashboard-cnt">
+
+                <div class="dashboard-cnt-top-blk">
+                    <input type="text" placeholder="Search a project...">
+                </div>
+
+                <div class="dashboard-credentials-blk">
+
+                    <!-- Notification removed -->
+
+                    <a href="/rank-check"
+                        style="background: #00b29d; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; display: inline-block;">Create
+                        New Project</a>
+
+
+
+                </div>
+
+            </div>
+
+            <!-- MAIN BODY -->
+            <div class="dashboard-main">
+                <div class="fld-box">
+                    <div class="left-blk">
+                        <h2 class="main-heading">Rank Report Summary</h2>
+                    </div>
+                    <div class="rgt-blk">
+                        <div class="down-btn">
+                            <a href="#" class="cmn-btn"
+                                style="width: 156px; height: 36px; display: inline-flex; justify-content: center; align-items: center; padding: 0; font-family: 'Lexend Deca', sans-serif; font-size: 13px; font-weight: 500; line-height: 20px; border-radius: 8px; text-decoration: none;">Download
+                                Full Report</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="projects-rank-row">
+                    <div class="projects-rank-box">
+                        <p class="project-title">Project Name</p>
+                        <span class="stats-note">Product Pages SEO</span>
+                    </div>
+                    <div class="projects-rank-box">
+                        <p class="project-title">URL</p>
+                        <span class="stats-note">www.example.com</span>
+                    </div>
+                    <div class="projects-rank-box">
+                        <p class="project-title">Checked on</p>
+                        <span class="stats-note">3 Nov 2025-11:42AM</span>
+                    </div>
+                </div>
+
+                <div class="projects-rank-row">
+                    <div class="projects-rank-box">
+                        <p class="project-title">Total Keywords</p>
+                        <span class="stats-note">26</span>
+                    </div>
+                    <div class="projects-rank-box">
+                        <p class="project-title">Search Engine</p>
+                        <span class="stats-note">Google</span>
+                    </div>
+                    <div class="projects-rank-box">
+                        <p class="project-title">Max Search Pages</p>
+                        <span class="stats-note">10</span>
+                    </div>
+                </div>
+                <!-- Tabs Section -->
+                <div class="dashboard-table recent">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th
+                                    style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                    Keywords</th>
+                                <th>Rank</th>
+                                <th>Page</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Keywords">courier service near me</td>
+                                <td data-label="Rank">#2</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">best parcel service</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">office delivery service</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">same-day courier india</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">overnight delivery</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">overnight delivery</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">overnight delivery</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">overnight delivery</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">overnight delivery</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">overnight delivery</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Keywords">overnight delivery</td>
+                                <td data-label="Rank">#1</td>
+                                <td data-label="Page">1</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="load-btn" style="display: flex; justify-content: center; margin-top: 20px;">
+                    <a href="#" class="cmn-btn"
+                        style="width: 156px; height: 36px; display: inline-flex; justify-content: center; align-items: center; padding: 0; font-family: 'Lexend Deca', sans-serif; font-size: 13px; font-weight: 500; line-height: 20px; border-radius: 8px; text-decoration: none;">Load
+                        More...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/owl.carousel.min.js"></script>
+    <script src="./js/common.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Successful</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Lexend Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lexend', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: #F4F6F8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Card */
+        .success-card {
+            width: 420px;
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Title */
+        .success-card h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1E1E1E;
+            margin-bottom: 8px;
+        }
+
+        /* Text */
+        .success-card p {
+            font-size: 14px;
+            color: #4B4B4B;
+            margin-bottom: 24px;
+        }
+
+        /* Button */
+        .btn-login {
+            width: 100%;
+            height: 44px;
+            border: none;
+            border-radius: 8px;
+            background: #0D9488;
+            color: #FFFFFF;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-login:hover {
+            background: #0F766E;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="success-card">
+        <h2>Registered Successfully</h2>
+        <p>Your account has been created. You can now log in.</p>
+
+        <button class="btn-login" onclick="goToLogin()">Login</button>
+    </div>
+
+    <script>
+        function goToLogin() {
+            window.location.href = "/login";
+        }
+    </script>
+
+</body>
+</html>

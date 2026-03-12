@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Rankplex</title>
+   <meta name="robots" content="noindex,nofollow">
+   <link rel="icon" type="image/svg+xml" href="./images/nice-logo.svg">
+   <link rel="stylesheet" href="./css/owl.carousel.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+   <div class="sign-in-form">
+      <div class="sign-in-blk">
+         <div class="form-logo">
+            <a href="/">
+               <img src="./images/nice-logo.svg" alt="Logo">
+            </a>
+         </div>
+         <div class="text-heading">Welcome Back!</div>
+         <p class="frm-text">Sign In to your Account</p>
+         <form method="post" action="/login">
+            <div class="email-field">
+               <label>Email Address</label>
+               <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+            <div class="password-field">
+               <label>Password</label>
+               <div style="position: relative;">
+                  <input type="password" id="password" name="password" placeholder="Enter your password" required
+                     style="padding-right: 40px;">
+                  <span onclick="togglePasswordVisibility('password', this)"
+                     style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                     </svg>
+                  </span>
+               </div>
+            </div>
+            <div class="form-links">
+               <div class="checkbox-field">
+                  <input type="checkbox" id="submit" name="remember">
+                  <label for="submit">Remember Me</label>
+               </div>
+               <div class="forgot-password-field">
+                  <a href="/forgot-password" class="forgot-link">Forgot Password?</a>
+               </div>
+            </div>
+            <div class="sumbit-field">
+               <input type="submit" value="Sign In">
+            </div>
+            <div class="divider">Or</div>
+            <div class="google-btn">
+               <div class="google-img">
+                  <img src="./images/google-img.webp" alt="google" width="23" height="20">
+               </div>
+               <div class="google-cnt">
+                  <a href="/login/google">sign in with google</a>
+               </div>
+            </div>
+            <div class="sign-up-link">
+               <p>Don’t have an Account</p>
+               <a href="/signup">Sign Up</a>
+            </div>
+         </form>
+      </div>
+   </div>
+
+   <!-- Error Modal -->
+   <div id="errorModal" class="modal"
+      style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+      <div class="modal-content"
+         style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 400px; border-radius: 8px; text-align: center;">
+         <p id="modalErrorMessage" style="color: red; font-size: 16px; margin-bottom: 20px;">
+            {{ error }}
+         </p>
+         <button onclick="document.getElementById('errorModal').style.display='none'"
+            style="cursor: pointer; padding: 10px 20px; border: none; background-color: #007f5f; color: #fff; border-radius: 5px;">OK</button>
+      </div>
+   </div>
+
+   <script src="./js/jquery.min.js"></script>
+   <script src="./js/owl.carousel.min.js"></script>
+   <script src="./js/common.js"></script>
+   <script>
+      function togglePasswordVisibility(inputId, iconSpan) {
+         const input = document.getElementById(inputId);
+         if (input.type === "password") {
+            input.type = "text";
+            iconSpan.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007f5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye-off"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+         } else {
+            input.type = "password";
+            iconSpan.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+         }
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+         // Check for server-side error
+         const serverError = "{{ error }}";
+         if (serverError && serverError !== "{" + "{ error }" + "}" && serverError !== "{" + "{ error if error else '' }" + "}") {
+            document.getElementById('errorModal').style.display = 'block';
+         }
+      });
+   </script>
+</body>
+
+</html>

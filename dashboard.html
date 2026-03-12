@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankplex</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/svg+xml" href="./images/nice-logo.svg">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css?v=7">
+    <link rel="stylesheet" href="./css/logout.css">
+    <style>
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .results-modal {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close-modal:hover {
+            color: #000;
+        }
+    </style>
+</head>
+
+<body class="preload">
+
+    <!-- Fixed toggle button (visible when sidebar is hidden) -->
+    <div class="sidebar-toggle-btn" onclick="toggleDashboardSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="13 17 18 12 13 7"></polyline>
+            <polyline points="6 17 11 12 6 7"></polyline>
+        </svg>
+    </div>
+
+    <div class="dashboard">
+        <!-- SIDEBAR  -->
+        <div class="dashboard-menu" id="sidebar">
+
+            <div class="dashboard-logo-blk">
+                <div class="dashboard-logo">
+                    <img src="./images/nice-logo.svg" alt="Rankplex" width="69" height="60">
+                </div>
+                <div class="dashboard-toggle" id="menuToggle" onclick="toggleDashboardSidebar()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </div>
+
+
+            </div>
+            <div class="dashboard-links">
+
+                <a href="/dashboard" class="dashboard-menu-cnt-blk active">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/dashboard-icn.svg"></div>
+                    <div class="dashboard-cnt-blk">Dashboard</div>
+                </a>
+
+                <a href="/rank-check" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/rank-check-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Create New Project</div>
+                </a>
+
+                <a href="/projects" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/projects-img.svg"
+                            onerror="this.src='./images/dashboard-icn.svg'"></div>
+                    <div class="dashboard-cnt-blk">Running Projects</div>
+                </a>
+
+                <a href="/history" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/completed-projects-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Completed Projects</div>
+                </a>
+
+
+
+
+                <a href="/settings" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/settings-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Settings</div>
+                </a>
+
+                <a href="javascript:void(0)" class="dashboard-menu-cnt-blk" onclick="openLogoutModal()">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/log-out-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Log out</div>
+                </a>
+
+            </div>
+        </div>
+
+        <div class="dashboard-main-wrapper">
+
+            <div class="dashboard-cnt">
+
+                <div class="dashboard-cnt-top-blk">
+                    <input type="text" id="dashboardSearchInput" placeholder="Search a project..."
+                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(104, 104, 104);">
+                </div>
+
+                <div class="dashboard-credentials-blk">
+                    <!-- Credit Display -->
+                    <!-- Credit Display  -->
+                    <style>
+                        .credit-bar {
+                            background: transparent;
+                            padding: 8px 0;
+                            display: flex;
+                            align-items: center;
+                            margin-right: 20px;
+                            color: #686868;
+                            font-family: 'Lexend Deca', sans-serif;
+                            font-weight: 500;
+                            font-size: 14px;
+                            line-height: 14px;
+                            box-shadow: none;
+                        }
+
+                        .credit-item {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        }
+                    </style>
+                    <div class="credit-bar">
+                        <div class="credit-item">
+                            <span>Balance Credits:</span>
+                            <span style="font-weight: 500; color: #000000;">{{ credits.remaining }}</span>
+                        </div>
+                    </div>
+                    <!-- Buy Credits Button -->
+                    <a href="javascript:void(0)" onclick="openBuyCreditsModal()"
+                        style="background: #007bff; color: #fff; text-decoration: none; padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: 500; cursor: pointer; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; line-height: 20px;">
+                        Buy Credits
+                    </a>
+
+                    <!-- Notification block removed -->
+
+                    <div id="toastContainer" class="toast-container"></div>
+
+                    <a href="/rank-check"
+                        style="background: #00b29d; color: #fff; text-decoration: none; padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: 500; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; line-height: 20px;">Create
+                        New Project</a>
+
+
+
+
+
+                </div>
+
+            </div>
+
+            <div class="dashboard-main">
+                <div id="dashboardMainArea">
+                    <div class="fld-box" style="margin-bottom: 25px;">
+                        <div class="dashboard-heading-blk">
+                            <div class="main-heading" style="font-size: 18px;">Dashboard</div>
+                            <p class="sub-heading">Your latest keyword performance at a glance.</p>
+                        </div>
+                        <!-- Button moved to header -->
+                    </div>
+                    <div style="width: 100%; height: 1px; background-color: #eeeeee; margin-bottom: 30px;"></div>
+
+                    <div class="dashboard-rank-row">
+                        <!-- 1. Active Running Projects (Blue User Icon) -->
+                        <div class="dashboard-rank-box" style="padding: 24px;">
+                            <div style="margin-bottom: 16px;">
+                                <div
+                                    style="width: 48px; height: 48px; background: #007bff; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p
+                                style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: #64748b; margin-bottom: 8px;">
+                                Running
+                                Projects</p>
+                            {% if stats.is_running %}
+                            <div class="dashboard-rank"
+                                style="font-size: 24px; font-weight: 700; color: #000000; display: flex; align-items: center; gap: 10px;">
+                                {{ stats.active_projects_count }}
+                                <span class="pulse-dot"></span>
+                            </div>
+                            <span class="stats-note" style="font-size: 12px; color: #00b29d;">Rank check in
+                                progress</span>
+                            {% else %}
+                            <div class="dashboard-rank" style="font-size: 24px; font-weight: 700; color: #000000;">0
+                            </div>
+                            <span class="stats-note"
+                                style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: #64748b;"></span>
+                            {% endif %}
+                        </div>
+
+                        <!-- 2. Total Projects (Green Folder Icon) -->
+                        <div class="dashboard-rank-box" style="padding: 24px;">
+                            <div style="margin-bottom: 16px;">
+                                <div
+                                    style="width: 48px; height: 48px; background: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p
+                                style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: #64748b; margin-bottom: 8px;">
+                                Total
+                                Projects
+                            </p>
+                            <div class="dashboard-rank" style="font-size: 24px; font-weight: 700; color: #000000;">{{
+                                stats.total_projects }}</div>
+                            <span class="stats-note"
+                                style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: #64748b;"></span>
+                        </div>
+
+                        <!-- 3. Total Websites (Purple Globe Icon) -->
+                        <div class="dashboard-rank-box" style="padding: 24px;">
+                            <div style="margin-bottom: 16px;">
+                                <div
+                                    style="width: 48px; height: 48px; background: #8b5cf6; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path
+                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p
+                                style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: #64748b; margin-bottom: 8px;">
+                                Total
+                                Websites
+                            </p>
+                            <div class="dashboard-rank" style="font-size: 24px; font-weight: 700; color: #000000;">{{
+                                stats.total_checks }}</div>
+                            <span class="stats-note"
+                                style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: #64748b;"></span>
+                        </div>
+
+                        <!-- 4. Keywords Tracked (Purple Hash Icon) -->
+                        <div class="dashboard-rank-box" style="padding: 24px;">
+                            <div style="margin-bottom: 16px;">
+                                <div
+                                    style="width: 48px; height: 48px; background: #6366f1; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <line x1="4" y1="9" x2="20" y2="9"></line>
+                                        <line x1="4" y1="15" x2="20" y2="15"></line>
+                                        <line x1="10" y1="3" x2="10" y2="21"></line>
+                                        <line x1="16" y1="3" x2="16" y2="21"></line>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p
+                                style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: #64748b; margin-bottom: 8px;">
+                                Keywords
+                                Tracked</p>
+                            <div class="dashboard-rank" style="font-size: 24px; font-weight: 700; color: #000000;">{{
+                                stats.total_keywords }}</div>
+                            <span class="stats-note"
+                                style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: #64748b;"></span>
+                        </div>
+                    </div>
+
+                    <div
+                        style="width: 100%; height: 1px; background-color: #eeeeee; margin-top: 10px; margin-bottom: 30px;">
+                    </div>
+
+                    <!-- Website Performance Section with Toggle -->
+                    {% if top_performing_sites or low_performing_sites %}
+                    <div class="fld-box"
+                        style="margin-top: 30px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <div class="dashboard-heading-blk">
+                            <div class="main-heading" style="font-size: 18px;">Website Performance</div>
+                            <p class="sub-heading">View sites with most improvements or drops.</p>
+                        </div>
+                        <div class="performance-toggle"
+                            style="background: #f1f5f9; padding: 4px; border-radius: 8px; display: flex; gap: 4px;">
+                            <button onclick="togglePerformanceView('top')" id="btn-top"
+                                style="border: none; background: #fff; padding: 0 10px; height: 36px; border-radius: 6px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; font-weight: 600; color: #10b981; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M12 19V5" />
+                                    <path d="M5 12l7-7 7 7" />
+                                </svg>
+                                Top Performing
+                            </button>
+                            <button onclick="togglePerformanceView('low')" id="btn-low"
+                                style="border: none; background: transparent; padding: 0 10px; height: 36px; border-radius: 6px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; font-weight: 500; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M12 5v14" />
+                                    <path d="M19 12l-7 7-7-7" />
+                                </svg>
+                                Low Performing
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Top Performing Table -->
+                    <div id="topPerformingTable" class="dashboard-table" style="margin-bottom: 40px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th
+                                        style="text-align: left; font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Website</th>
+                                    <th
+                                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Keywords</th>
+                                    <th
+                                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Improved</th>
+                                    <th
+                                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Dropped</th>
+                                    <th
+                                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Avg Position</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for site in top_performing_sites %}
+                                <tr>
+                                    <td style="display: flex; align-items: center; gap: 10px;">
+
+                                        <span style="font-weight: 500;">{{ site.client_name }}</span>
+                                    </td>
+                                    <td>{{ site.keywords }}</td>
+                                    <td style="color: #10b981; font-weight: 500;">↑ {{ site.improved }}</td>
+                                    <td style="color: #ef4444; font-weight: 500;">↓ {{ site.dropped }}</td>
+                                    <td><span
+                                            style="background: #e0f2fe; color: #0284c7; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500;">#{{
+                                            site.avg_position }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Low Performing Table (Hidden by Default) -->
+                    <div id="lowPerformingTable" class="dashboard-table" style="margin-bottom: 40px; display: none;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th
+                                        style="text-align: left; font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Website</th>
+                                    <th
+                                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Keywords</th>
+                                    <th
+                                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Improved</th>
+                                    <th
+                                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Dropped</th>
+                                    <th
+                                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(0, 0, 0);">
+                                        Avg Position</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for site in low_performing_sites %}
+                                <tr>
+                                    <td style="display: flex; align-items: center; gap: 10px;">
+
+                                        <span style="font-weight: 500;">{{ site.client_name }}</span>
+                                    </td>
+                                    <td>{{ site.keywords }}</td>
+                                    <td style="color: #10b981; font-weight: 500;">↑ {{ site.improved }}</td>
+                                    <td style="color: #ef4444; font-weight: 500;">↓ {{ site.dropped }}</td>
+                                    <td><span
+                                            style="background: #e0f2fe; color: #0284c7; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500;">#{{
+                                            site.avg_position }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <script>
+                        function togglePerformanceView(type) {
+                            const topTable = document.getElementById('topPerformingTable');
+                            const lowTable = document.getElementById('lowPerformingTable');
+                            const btnTop = document.getElementById('btn-top');
+                            const btnLow = document.getElementById('btn-low');
+
+                            if (type === 'top') {
+                                topTable.style.display = 'block';
+                                lowTable.style.display = 'none';
+
+                                btnTop.style.background = '#fff';
+                                btnTop.style.color = '#10b981';
+                                btnTop.style.fontWeight = '600';
+                                btnTop.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+
+                                btnLow.style.background = 'transparent';
+                                btnLow.style.color = '#64748b';
+                                btnLow.style.fontWeight = '500';
+                                btnLow.style.boxShadow = 'none';
+                            } else {
+                                topTable.style.display = 'none';
+                                lowTable.style.display = 'block';
+
+                                btnLow.style.background = '#fff';
+                                btnLow.style.color = '#ef4444';
+                                btnLow.style.fontWeight = '600';
+                                btnLow.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+
+                                btnTop.style.background = 'transparent';
+                                btnTop.style.color = '#64748b';
+                                btnTop.style.fontWeight = '500';
+                                btnTop.style.boxShadow = 'none';
+                            }
+                        }
+                    </script>
+                    {% endif %}
+
+                    <div class="table-top" id="history-section">
+                        <p
+                            style="font-family: 'Lexend Deca', sans-serif; font-size: 18px; font-weight: 700; color: #1e1e1e;">
+                            Recent All History</p>
+                    </div>
+
+                    <div class="dashboard-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th
+                                        style="text-align: center; padding: 10px; color: #000000; font-weight: 500; font-size: 14px; font-family: 'Lexend Deca', sans-serif;">
+                                        #</th>
+                                    <th
+                                        style="text-align: left; padding: 10px; color: #000000; font-weight: 500; font-size: 14px; font-family: 'Lexend Deca', sans-serif;">
+                                        Project</th>
+                                    <th
+                                        style="padding: 10px; color: #000000; font-weight: 500; font-size: 14px; font-family: 'Lexend Deca', sans-serif;">
+                                        URL
+                                    </th>
+                                    <th
+                                        style="padding: 10px; color: #000000; font-weight: 500; font-size: 14px; font-family: 'Lexend Deca', sans-serif;">
+                                        Date &
+                                        Time</th>
+                                    <th
+                                        style="padding: 10px; color: #000000; font-weight: 500; font-size: 14px; font-family: 'Lexend Deca', sans-serif;">
+                                        Keywords Checked</th>
+                                    <th
+                                        style="padding: 10px; color: #000000; font-weight: 500; font-size: 14px; font-family: 'Lexend Deca', sans-serif;">
+                                        Keywords in Top 10</th>
+                                    <th
+                                        style="text-align: center; padding: 10px; color: #000000; font-weight: 500; font-size: 14px; font-family: 'Lexend Deca', sans-serif;">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tbody id="recentHistoryBody">
+                                {% for run in recent_projects %}
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 12px 10px; text-align: center;">{{ loop.index + (current_page -
+                                        1) * 10 }}</td>
+                                    <td style="padding: 12px 10px; text-align: left;" data-label="Project">{{
+                                        run.project_name }}</td>
+                                    <td style="padding: 12px 10px;" data-label="url"><a
+                                            href="{{ run.target_domain if 'http' in run.target_domain else 'https://' + run.target_domain }}"
+                                            target="_blank" title="{{ run.target_domain }}"
+                                            style="color:#00B29D; text-decoration:none;">{{ run.target_domain[:30] +
+                                            '...' if run.target_domain|length > 30 else run.target_domain }}</a></td>
+                                    <td style="padding: 12px 10px; font-family: 'Lexend Deca', sans-serif; font-weight: 500; font-size: 13px; color: #666666;"
+                                        data-label="Date & Time">{{
+                                        run.timestamp.strftime('%d-%m-%Y, %I:%M %p') if
+                                        run.timestamp and
+                                        run.timestamp.strftime is defined else run.timestamp }}</td>
+                                    <td style="padding: 12px 10px;" data-label="Keywords Checked">{{ run.keywords_count
+                                        }}</td>
+                                    <td style="padding: 12px 10px;" data-label="Keywords in Top 10">
+                                        <span style="font-weight: 600; color: #333;">{{ run.top_keywords }}</span>
+                                    </td>
+                                    <td data-label="Actions"
+                                        style="padding: 12px 10px; display: flex; gap: 15px; justify-content: center; align-items: center;">
+                                        <a href="javascript:void(0)" data-project-name="{{ run.project_name }}"
+                                            onclick="viewResults('{{ run.id }}', this.getAttribute('data-project-name'))"
+                                            title="View Quick Result">
+                                            <img src="./images/eye-img.svg" style="width: 20px;">
+                                        </a>
+                                        <a href="/download-result/{{ run.id }}" title="Download Excel">
+                                            <img src="./images/download-img.webp" style="width: 20px;">
+                                        </a>
+                                        <a href="javascript:void(0)" onclick="deleteRun('{{ run.id }}')"
+                                            title="Delete Run">
+                                            <img src="./images/delete-img.svg" style="width: 18px;">
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="7">No recent activity found. Start a <a href="/rank-check">Rank
+                                            Check</a>.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="recentHistoryPagination" style="min-height: 50px;">
+                        {% if total_pages > 1 %}
+                        <div class="pagination"
+                            style="display: flex; justify-content: center; gap: 10px; margin-top: 20px; align-items: center;">
+                            {% if current_page > 1 %}
+                            <a href="?page={{ current_page - 1 }}"
+                                onclick="loadDashboardPage(event, '{{ current_page - 1 }}')"
+                                style="padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px; color: #333; text-decoration: none; font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 20px;">&laquo;
+                                Previous</a>
+                            {% endif %}
+
+                            {% for p in range(1, total_pages + 1) %}
+                            {% if p == current_page %}
+                            <span
+                                style="padding: 8px 12px; border: 1px solid #00B29D; background-color: #00B29D; color: white; border-radius: 6px; font-size: 14px;">{{
+                                p }}</span>
+                            {% elif p == 1 or p == total_pages or (p >= current_page - 2 and p <= current_page + 2) or
+                                (current_page <=4 and p <=5) or (current_page>= total_pages - 3 and p >= total_pages -
+                                4) %}
+                                <a href="?page={{ p }}" onclick="loadDashboardPage(event, '{{ p }}')"
+                                    style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; color: #333; text-decoration: none; font-size: 14px;">{{
+                                    p }}</a>
+                                {% elif (p == 2 and current_page > 4) or (p == total_pages - 1 and current_page <
+                                    total_pages - 3) %} <span style="padding: 0 5px; color: #666;">...</span>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                    {% if current_page < total_pages %} <a href="?page={{ current_page + 1 }}"
+                                        onclick="loadDashboardPage(event, '{{ current_page + 1 }}')"
+                                        style="padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border: 1px solid #ddd; border-radius: 8px; color: #333; text-decoration: none; font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 20px;">
+                                        Next &raquo;</a>
+                                        {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <script>
+                        function loadDashboardPage(e, page) {
+                            e.preventDefault();
+                            const tbody = document.getElementById('recentHistoryBody');
+                            const pagDiv = document.getElementById('recentHistoryPagination');
+
+                            // Optional: Loading opacity
+                            tbody.style.opacity = '0.5';
+
+                            fetch('/dashboard?page=' + page, {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.html_rows) tbody.innerHTML = data.html_rows;
+                                    if (data.html_pagination) pagDiv.innerHTML = data.html_pagination;
+                                    tbody.style.opacity = '1';
+                                })
+                                .catch(err => {
+                                    console.error('Pagination error', err);
+                                    tbody.style.opacity = '1';
+                                    // Fallback
+                                    window.location.href = '?page=' + page;
+                                });
+                        }
+                    </script>
+
+                </div> <!-- End of dashboardMainArea -->
+
+                <!-- Integrated Results View -->
+                <div id="resultsViewArea" style="display: none; padding-top: 10px;">
+
+                    <!-- Title Area (hidden but needed for JS) -->
+                    <div id="modalTitle" style="display: none;"></div>
+
+                    <!-- Results Display -->
+                    <div id="modalBody">
+                        <div class="loading-results">Loading results...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/owl.carousel.min.js"></script>
+        <script src="./js/common.js?v=4"></script>
+
+        <!-- Results Modal Removed and replaced by integrated view -->
+
+
+        <script>
+            let currentResultsData = [];
+            let currentFilter = 'all';
+            let currentSearch = '';
+
+            function renderTable(results) {
+                const body = document.getElementById('modalBody');
+                const tableBody = body.querySelector('.results-table tbody');
+
+                // If table doesn't exist yet (first load), we don't render rows yet, viewResults handles container.
+                if (!tableBody) return;
+
+                let filtered = results.filter(row => {
+                    if (currentSearch && !row.keyword.toLowerCase().includes(currentSearch.toLowerCase())) return false;
+                    return true;
+                });
+
+                if (filtered.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px; color: #999;">No keywords match your search.</td></tr>';
+                    return;
+                }
+
+                let html = '';
+                filtered.forEach(row => {
+                    let rankDisplay = row.rank;
+                    if (row.rank === 'Not found in top 100' || row.rank === 'N/A' || !row.rank) {
+                        rankDisplay = '<span style="color:#aaa;">-</span>';
+                    } else {
+                        rankDisplay = `<span style="font-weight:600; color:#3b82f6; background: #eff6ff; padding: 4px 10px; border-radius: 6px; font-size: 13px;">#${row.rank}</span>`;
+                    }
+
+                    let prevRankDisplay = '<span style="color:#aaa;">-</span>';
+                    if (row.previous_rank && row.previous_rank !== "N/A" && row.previous_rank !== 'Not found in top 100') {
+                        prevRankDisplay = `<span style="color:#64748b; font-weight: 500;">#${row.previous_rank}</span>`;
+                    } else if (row.previous_rank === 'Not found in top 100') {
+                        prevRankDisplay = '<span style="color:#94a3b8; font-weight: 500;">#100+</span>';
+                    }
+
+                    let changeHtml = '<span style="color: #cbd5e1;">-</span>';
+                    if (row.status === 'improved') {
+                        changeHtml = `<span style="color: #10b981; font-weight: 600; background: #ecfdf5; padding: 4px 10px; border-radius: 6px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"></polyline></svg>${Math.abs(row.change)}</span>`;
+                    } else if (row.status === 'dropped') {
+                        changeHtml = `<span style="color: #ef4444; font-weight: 600; background: #fef2f2; padding: 4px 10px; border-radius: 6px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>${Math.abs(row.change)}</span>`;
+                    } else if (row.status === 'new') {
+                        changeHtml = `<span style="color: #3b82f6; font-size: 11px; font-weight: 700; background: #eff6ff; padding: 3px 8px; border-radius: 6px; text-transform: uppercase;">NEW</span>`;
+                    }
+
+                    // Best Rank Logic
+                    let bestRankDisplay = '<span style="color: #cbd5e1;">-</span>';
+                    if (row.best_rank && row.best_rank !== 'N/A') {
+                        bestRankDisplay = `<span style="font-weight: 700; color: #10b981; font-size: 13px;">#${row.best_rank}</span>`;
+                    } else {
+                        // Fallback if not available in row data, try to be smart or specific logic
+                        if (row.rank && row.rank !== 'N/A' && row.rank !== 'Not found in top 100') {
+                            // simplistic fallback or just empty
+                            bestRankDisplay = `<span style="font-weight: 700; color: #10b981; font-size: 13px;">#${row.rank}</span>`;
+                        }
+                    }
+
+                    // Landing Page Logic
+                    let pageHtml = row.landing_page;
+                    if (row.landing_page && row.landing_page.startsWith('http')) {
+                        try {
+                            let urlObj = new URL(row.landing_page);
+                            let pathDisplay = urlObj.pathname === '/' ? '/' : (urlObj.pathname.length > 30 ? urlObj.pathname.substring(0, 30) + '...' : urlObj.pathname);
+                            pageHtml = `<a href="${row.landing_page}" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 6px;" title="${row.landing_page}">${pathDisplay} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>`;
+                        } catch (e) {
+                            pageHtml = `<a href="${row.landing_page}" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 500;">Link <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>`;
+                        }
+                    } else if (!row.landing_page || row.landing_page === '-' || row.landing_page === 'N/A') {
+                        if (row.page && row.page !== '-') {
+                            pageHtml = `<span style="color: #3b82f6; font-weight: 500;">Page ${row.page}</span>`;
+                        } else {
+                            pageHtml = '<span style="color:#cbd5e1;">-</span>';
+                        }
+                    } else {
+                        pageHtml = `<span style="color:#64748b;">${row.landing_page}</span>`;
+                    }
+
+                    html += `
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 16px 12px; font-weight: 500; color: #1e293b;">${row.keyword}</td>
+                        <td style="padding: 16px 12px; text-align: center;">${rankDisplay}</td>
+                        <td style="padding: 16px 12px; text-align: center;">${prevRankDisplay}</td>
+                        <td style="padding: 16px 12px; text-align: center;">${changeHtml}</td>
+                        <td style="padding: 16px 12px; text-align: center;">${bestRankDisplay}</td>
+                        <td style="padding: 16px 12px;">${pageHtml}</td>
+                    </tr>
+                `;
+                });
+
+                tableBody.innerHTML = html;
+            }
+
+            function viewResults(runId, projectName) {
+                try {
+                    const listArea = document.getElementById('dashboardMainArea');
+                    const resultsArea = document.getElementById('resultsViewArea');
+                    const body = document.getElementById('modalBody');
+                    const title = document.getElementById('modalTitle');
+
+                    // Toggle views
+                    listArea.style.display = 'none';
+                    resultsArea.style.display = 'block';
+
+                    // Reset
+                    body.innerHTML = '<div class="loading-results">Loading results...</div>';
+
+                    // Reset filters
+                    currentSearch = '';
+                    currentResultsData = [];
+
+                    fetch(`/api/run-results/${runId}`)
+                        .then(response => {
+                            if (!response.ok) throw new Error("HTTP error " + response.status);
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.error) {
+                                body.innerHTML = `<div class="loading-results" style="color: red;">Error: ${data.error}</div>`;
+                                return;
+                            }
+
+                            const results = data.data || [];
+                            const meta = data.meta || {};
+                            currentResultsData = results;
+
+                            if (!results || results.length === 0) {
+                                body.innerHTML = '<div class="loading-results">No results found for this run.</div>';
+                                return;
+                            }
+
+                            // Robust Project Name
+                            let displayProjectName = projectName;
+                            if (!displayProjectName || displayProjectName === 'nan') displayProjectName = meta.project_name || 'Project';
+
+                            // INJECT RICH HEADER (Search, Domain, Compare Placeholder) - MATCHING HISTORY.HTML
+                            title.style.display = 'block';
+                            title.style.width = '100%';
+                            title.innerHTML = `
+                         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 15px; padding-bottom: 25px; border-bottom: 1px solid #f0f0f0; margin-bottom: 20px;">
+
+                            <!-- Left: Project Details & Search -->
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 15px;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <span style="font-size: 24px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.5px;">${displayProjectName}</span>
+                                    <a href="https://${meta.domain}" target="_blank" style="font-size: 14px; color: #00B29D; text-decoration: none; background: #e0f7f4; padding: 4px 10px; border-radius: 20px; font-weight: 500; display: flex; align-items: center; gap: 4px;">
+                                        ${meta.domain} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                    </a>
+                                </div>
+                                <!-- Search Input -->
+                                <div style="position: relative; width: 320px;">
+                                    <input type="text" placeholder="Search keywords..." onkeyup="currentSearch = this.value; renderTable(currentResultsData);"
+                                        style="width: 100%; padding: 10px 12px 10px 36px; border: 1px solid #e1e4e8; border-radius: 8px; outline: none; font-size: 14px; background: #fff; transition: border-color 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02);"
+                                        onfocus="this.style.borderColor='#00B29D'" onblur="this.style.borderColor='#e1e4e8'">
+                                    <svg style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9aa5b1;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                </div>
+                            </div>
+
+                            <!-- Right: Back Button -->
+                            <div>
+                                <button onclick="closeResultsView()" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; color: #64748b; transition: all 0.2s;" onmouseover="this.style.color='#ef4444'; this.style.borderColor='#ef4444';" onmouseout="this.style.color='#64748b'; this.style.borderColor='#e2e8f0';" title="Close and return to dashboard">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                         </div>
+                    `;
+
+                            // TABLE STRUCTURE
+                            let tableHtml = `
+                        <table class="results-table" style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+                            <thead>
+                                <tr style="background: #fff; border-bottom: 2px solid #f1f5f9;">
+                                    <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">CHECKED KEYWORD</th>
+                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">RANK</th>
+                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">PREVIOUS RANK</th>
+                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">CHANGE</th>
+                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">BEST RANK</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">LANDING PAGE</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    `;
+
+                            body.innerHTML = tableHtml;
+
+                            renderTable(results);
+                        })
+                        .catch(err => {
+                            body.innerHTML = `<div class="loading-results" style="color: red;">Failed to load results. ${err.message}</div>`;
+                            console.error(err);
+                        });
+                } catch (e) {
+                    console.error("ViewResults Error:", e);
+                }
+            }
+
+            function closeResultsView() {
+                document.getElementById('dashboardMainArea').style.display = 'block';
+                document.getElementById('resultsViewArea').style.display = 'none';
+            }
+
+            function deleteRun(runId) {
+                showConfirm(
+                    "Delete Run?",
+                    "Are you sure you want to delete this run permanently?",
+                    function () {
+                        fetch(`/api/delete-run/${runId}`, { method: 'POST' })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) location.reload();
+                                else showAlert("Error", data.error);
+                            })
+                            .catch(err => showAlert("Error", "Failed to delete run."));
+                    }
+                );
+            }
+
+            // Copied reCheckProject for robustness (simplified without modal for now)
+            function reCheckProject(runId) {
+                showConfirm(
+                    "Start Re-check?",
+                    "Start re-check for this project?",
+                    function () {
+                        fetch(`/api/re-check/${runId}`, { method: 'POST' })
+                            .then(r => r.json())
+                            .then(data => {
+                                if (data.success && data.run_id) {
+                                    window.location.href = `/progress/${data.run_id}`;
+                                } else {
+                                    showAlert("Error", data.error || "Unknown");
+                                }
+                            })
+                            .catch(err => showAlert("Error", "Failed to start re-check"));
+                    }
+                );
+            }
+
+            function closeResultsModal() {
+                document.getElementById('resultsModalOverlay').style.display = 'none';
+            }
+
+            window.onclick = function (event) {
+                const overlay = document.getElementById('resultsModalOverlay');
+                if (event.target == overlay) {
+                    closeResultsModal();
+                }
+            }
+
+            function filterDashboard() {
+                var input, filter, tables, i, j, tr, tds, txtValue, match;
+                input = document.getElementById("dashboardSearchInput");
+                if (!input) return;
+                filter = input.value.toUpperCase();
+                tables = document.querySelectorAll(".dashboard-table table");
+
+                for (j = 0; j < tables.length; j++) {
+                    tr = tables[j].getElementsByTagName("tr");
+                    // Start from 1 to skip header
+                    for (i = 1; i < tr.length; i++) {
+                        tds = tr[i].getElementsByTagName("td");
+                        match = false;
+                        // Search in all columns
+                        for (var k = 0; k < tds.length; k++) {
+                            if (tds[k]) {
+                                txtValue = tds[k].textContent || tds[k].innerText;
+                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                    match = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (match) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+            document.getElementById('dashboardSearchInput').addEventListener('keyup', filterDashboard);
+
+            // Check for search query param on load
+            window.addEventListener('DOMContentLoaded', () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchQuery = urlParams.get('search');
+                if (searchQuery) {
+                    const input = document.getElementById('dashboardSearchInput');
+                    if (input) {
+                        input.value = searchQuery;
+                        // Execute filter directly
+                        filterDashboard();
+                    }
+                }
+            });
+        </script>
+
+        <!-- Logout Modal -->
+        <div id="logoutModal" class="logout-overlay">
+            <div class="logout-modal">
+                <h2>Are you sure you want to log out?</h2>
+                <p>You'll be signed out from your current session.</p>
+
+                <div class="logout-actions">
+                    <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                    <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="./js/logout.js"></script>
+
+        <!-- Buy Credits Modal (Redesigned) -->
+        <div id="buyCreditsModal" class="logout-overlay"
+            style="display: none; z-index: 9999; align-items: flex-start; padding-top: 50px; overflow-y: auto;">
+            <div class="logout-modal" style="width: 700px; max-width: 95%;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">Upgrade Your Plan</h2>
+                    <button onclick="document.getElementById('buyCreditsModal').style.display='none'"
+                        style="background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
+                </div>
+
+                <!-- Tabs -->
+                <div style="display: flex; gap: 20px; border-bottom: 1px solid #eee; margin-bottom: 20px;">
+                    <div id="tabPayGo" onclick="switchTab('paygo')"
+                        style="padding: 10px 0; border-bottom: 2px solid #00b29d; color: #00b29d; font-weight: 600; cursor: pointer;">
+                        Pay As You Go</div>
+                    <div id="tabMonthly" onclick="switchTab('monthly')"
+                        style="padding: 10px 0; border-bottom: 2px solid transparent; color: #666; cursor: pointer;">
+                        Monthly
+                        Subscription</div>
+                </div>
+
+                <!-- Pay As You Go Content -->
+                <div id="contentPayGo" style="display: block;">
+                    <p style="color: #666; margin-bottom: 15px;">One-time purchase. Credits never expire.</p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                        <!-- Micro Pack -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Micro', 5)">
+                            <div style="font-weight: 700; font-size: 18px;">Micro</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">500 Credits</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$5</div>
+                            <div style="font-size: 12px; color: #999;">$0.01 / kw</div>
+                        </div>
+                        <!-- Starter Pack -->
+                        <div class="plan-card selected-plan" onclick="selectPlan(this, 'Starter', 15)">
+                            <div
+                                style="background: #00b29d; color: white; border-radius: 4px; padding: 2px 6px; font-size: 10px; position: absolute; top: 10px; right: 10px;">
+                                POPULAR</div>
+                            <div style="font-weight: 700; font-size: 18px;">Starter</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">2,500 Credits</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$15</div>
+                            <div style="font-size: 12px; color: #999;">$0.006 / kw</div>
+                        </div>
+                        <!-- Pro Pack -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Pro', 50)">
+                            <div style="font-weight: 700; font-size: 18px;">Pro</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">10,000 Credits</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$50</div>
+                            <div style="font-size: 12px; color: #999;">$0.005 / kw</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Content -->
+                <div id="contentMonthly" style="display: none;">
+                    <p style="color: #666; margin-bottom: 15px;">Auto-refill every month. Cancel anytime. Best value.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                        <!-- Freelancer -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Freelancer Monthly', 12)">
+                            <div style="font-weight: 700; font-size: 18px;">Freelancer</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">3,000 Credits/mo</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$12<span
+                                    style="font-size:12px; color:#666;">/mo</span></div>
+                            <div style="font-size: 12px; color: #999;">$0.004 / kw</div>
+                        </div>
+                        <!-- Agency -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Agency Monthly', 35)">
+                            <div style="font-weight: 700; font-size: 18px;">Agency</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">10,000 Credits/mo</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$35<span
+                                    style="font-size:12px; color:#666;">/mo</span></div>
+                            <div style="font-size: 12px; color: #999;">$0.0035 / kw</div>
+                        </div>
+                        <!-- Enterprise -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Enterprise Monthly', 100)">
+                            <div style="font-weight: 700; font-size: 18px;">Big Biz</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">35,000 Credits/mo</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$100<span
+                                    style="font-size:12px; color:#666;">/mo</span></div>
+                            <div style="font-size: 12px; color: #999;">$0.0028 / kw</div>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .plan-card {
+                        border: 1px solid #ddd;
+                        border-radius: 8px;
+                        padding: 20px;
+                        text-align: center;
+                        cursor: pointer;
+                        position: relative;
+                        transition: all 0.2s;
+                    }
+
+                    .plan-card:hover {
+                        border-color: #00b29d;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                    }
+
+                    .selected-plan {
+                        border: 2px solid #00b29d;
+                        background: #f0fdfb;
+                    }
+                </style>
+
+                <div
+                    style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 14px; color: #666;">
+                        Selected: <strong id="selectedPlanName">Starter</strong> - <span
+                            id="selectedPlanPrice">$15</span>
+                    </div>
+                    <div class="logout-actions" style="margin-top: 0;">
+                        <button class="btn-cancel"
+                            onclick="document.getElementById('buyCreditsModal').style.display='none'">Cancel</button>
+                        <button class="btn-logout" style="background: #007bff;" onclick="simulatePayment()">Proceed to
+                            Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Simulation Toast -->
+        <div id="paymentToast"
+            style="display:none; position: fixed; top: 20px; right: 20px; background: #fff; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border-left: 4px solid #00b29d; z-index: 10000; animation: slideIn 0.3s ease;">
+            <div style="font-weight: 600; margin-bottom: 5px;">Redirecting to Payment...</div>
+            <div style="font-size: 13px; color: #666;">Connecting to secure gateway.</div>
+        </div>
+
+        <script>
+            function openBuyCreditsModal() { document.getElementById('buyCreditsModal').style.display = 'flex'; }
+
+            function switchTab(tab) {
+                if (tab === 'paygo') {
+                    document.getElementById('tabPayGo').style.borderBottomColor = '#00b29d';
+                    document.getElementById('tabPayGo').style.color = '#00b29d';
+                    document.getElementById('tabMonthly').style.borderBottomColor = 'transparent';
+                    document.getElementById('tabMonthly').style.color = '#666';
+                    document.getElementById('contentPayGo').style.display = 'block';
+                    document.getElementById('contentMonthly').style.display = 'none';
+
+                    // Reset selection to default
+                    const defaultCard = document.querySelector('#contentPayGo .plan-card:nth-child(2)'); // Starter
+                    if (defaultCard) selectPlan(defaultCard, 'Starter', 15);
+                } else {
+                    document.getElementById('tabMonthly').style.borderBottomColor = '#00b29d';
+                    document.getElementById('tabMonthly').style.color = '#00b29d';
+                    document.getElementById('tabPayGo').style.borderBottomColor = 'transparent';
+                    document.getElementById('tabPayGo').style.color = '#666';
+                    document.getElementById('contentMonthly').style.display = 'block';
+                    document.getElementById('contentPayGo').style.display = 'none';
+
+                    // Reset selection to default
+                    const defaultCard = document.querySelector('#contentMonthly .plan-card:nth-child(1)'); // Freelancer
+                    if (defaultCard) selectPlan(defaultCard, 'Freelancer Monthly', 12);
+                }
+            }
+
+            function selectPlan(el, name, price) {
+                document.querySelectorAll('.plan-card').forEach(c => {
+                    c.classList.remove('selected-plan');
+                    c.style.borderWidth = '1px';
+                    c.style.background = 'white';
+                });
+                el.classList.add('selected-plan');
+                el.style.borderWidth = '2px';
+                el.style.background = '#f0fdfb';
+
+                document.getElementById('selectedPlanName').innerText = name;
+                document.getElementById('selectedPlanPrice').innerText = '$' + price;
+            }
+
+            function simulatePayment() {
+                const planName = document.getElementById('selectedPlanName').innerText;
+                const price = document.getElementById('selectedPlanPrice').innerText;
+
+                // Determine credit amount based on plan name
+                let credits = 0;
+                if (planName.includes('Micro')) credits = 500;
+                else if (planName.includes('Starter')) credits = 2500;
+                else if (planName.includes('Pro')) credits = 10000;
+                else if (planName.includes('Freelancer')) credits = 3000;
+                else if (planName.includes('Agency')) credits = 10000;
+                else if (planName.includes('Big Biz')) credits = 35000;
+
+                showConfirm("Secure Payment", "Proceed to Secure Payment Gateway for " + planName + "?", function () {
+                    const cleanPrice = price.replace('$', '').replace('/mo', '');
+                    window.location.href = `/payment?plan=${encodeURIComponent(planName)}&price=${cleanPrice}&credits=${credits}`;
+                });
+            }
+        </script>
+        <!-- Logout Modal -->
+        <div id="logoutModal" class="logout-overlay">
+            <div class="logout-modal">
+                <h2>Are you sure you want to log out?</h2>
+                <p>You'll be signed out from your current session.</p>
+
+                <div class="logout-actions">
+                    <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                    <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="./js/logout.js"></script>
+</body>
+
+</html>

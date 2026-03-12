@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankplex - Projects</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/svg+xml" href="./images/nice-logo.svg">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css?v=5">
+    <link rel="stylesheet" href="./css/logout.css">
+    <style>
+        .project-folder {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .project-header {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            background: #fff;
+            transition: background 0.2s;
+        }
+
+        .project-header:hover {
+            background: #fcfcfc;
+        }
+    </style>
+</head>
+
+<body class="preload">
+
+    <!-- Fixed toggle button (visible when sidebar is hidden) -->
+    <div class="sidebar-toggle-btn" onclick="toggleDashboardSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="13 17 18 12 13 7"></polyline>
+            <polyline points="6 17 11 12 6 7"></polyline>
+        </svg>
+    </div>
+
+    <div class="dashboard">
+        <div class="dashboard-menu">
+            <div class="dashboard-logo-blk">
+                <div class="dashboard-logo">
+                    <img src="./images/nice-logo.svg" alt="Rankplex" width="69" height="60">
+                </div>
+                <div class="dashboard-toggle" onclick="toggleDashboardSidebar()"
+                    style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="dashboard-links">
+                <a href="/dashboard" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/dashboard-icn.svg"></div>
+                    <div class="dashboard-cnt-blk">Dashboard</div>
+                </a>
+
+                <a href="/rank-check" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/rank-check-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Create New Project</div>
+                </a>
+
+                <a href="/projects" class="dashboard-menu-cnt-blk active">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/projects-img.svg"
+                            onerror="this.src='./images/dashboard-icn.svg'"></div>
+                    <div class="dashboard-cnt-blk">Running Projects</div>
+                </a>
+
+                <a href="/history" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/completed-projects-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Completed Projects</div>
+                </a>
+
+
+
+
+                <a href="/settings" class="dashboard-menu-cnt-blk">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/settings-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Settings</div>
+                </a>
+
+                <a href="javascript:void(0)" class="dashboard-menu-cnt-blk" onclick="openLogoutModal()">
+                    <div class="dashboard-cnt-img-blk"><img src="./images/log-out-img.svg"></div>
+                    <div class="dashboard-cnt-blk">Log out</div>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE CONTENT -->
+        <div class="dashboard-main-wrapper">
+
+            <!-- Top Header -->
+            <div class="dashboard-cnt">
+
+                <div class="dashboard-cnt-top-blk">
+                    <input type="text" id="projectSearchInput" placeholder="Search a project..."
+                        style="font-family: 'Lexend Deca', sans-serif; font-size: 14px; font-weight: 500; line-height: 14px; color: rgb(104, 104, 104);">
+                </div>
+
+                <div class="dashboard-credentials-blk">
+                    <!-- Credit Display  -->
+                    <style>
+                        .credit-bar {
+                            background: transparent;
+                            padding: 8px 0;
+                            display: flex;
+                            align-items: center;
+                            margin-right: 20px;
+                            color: #686868;
+                            font-family: 'Lexend Deca', sans-serif;
+                            font-weight: 500;
+                            font-size: 14px;
+                            line-height: 14px;
+                            box-shadow: none;
+                        }
+
+                        .credit-item {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        }
+                    </style>
+                    <div class="credit-bar">
+                        <div class="credit-item">
+                            <span>Balance Credits:</span>
+                            <span style="font-weight: 500; color: #000000;">{{ credits.remaining }}</span>
+                        </div>
+                    </div>
+                    <!-- Buy Credits Button -->
+                    <a href="javascript:void(0)" onclick="openBuyCreditsModal()"
+                        style="background: #007bff; color: #fff; text-decoration: none; padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: 500; cursor: pointer; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; line-height: 20px;">
+                        Buy Credits
+                    </a>
+
+                    <!-- Notification block removed -->
+
+                    <div id="toastContainer" class="toast-container"></div>
+
+                    <a href="/rank-check"
+                        style="background: #00b29d; color: #fff; text-decoration: none; padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: 500; margin-right: 15px; font-family: 'Lexend Deca', sans-serif; font-size: 13px; line-height: 20px;">Create
+                        New Project</a>
+
+
+
+                </div>
+
+            </div>
+
+            <!-- MAIN BODY -->
+            <div class="dashboard-main">
+                <div id="projectsMainArea">
+                    <div class="projects-blk">
+                        <div class="main-heading-blk">
+
+
+                        </div>
+                    </div>
+                    <div class="projects-list" style="margin-top: 20px;">
+
+                        <!-- 1. ACTIVE RUNNING -->
+                        {% if active_projects %}
+                        <div class="section-header" style="margin-bottom: 10px; color: #007bff; font-weight: 600;">
+                            Running Projects
+                        </div>
+                        {% for project_name, tasks in active_projects.items() %}
+                        <div class="project-folder active-folder" style="border-left: 4px solid #007bff;">
+                            <div class="project-header" onclick="toggleActiveProject('{{ loop.index }}')">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="./images/projects-img.svg" style="width: 24px; opacity: 1;">
+                                    <h3 style="margin: 0; font-size: 16px; font-weight: 600;">{{ project_name }}</h3>
+                                    <span
+                                        style="font-size: 12px; color: #fff; background: #007bff; padding: 2px 6px; border-radius: 4px;">{{
+                                        tasks|length }} Running</span>
+                                </div>
+                                <div id="arrow-active-{{ loop.index }}"
+                                    style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; transition: transform 0.3s; margin-left: 10px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 9l6 6 6-6" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="project-content" id="content-active-{{ loop.index }}"
+                                style="display: block; padding: 10px 20px; background: #f0f7ff; border-top: 1px solid #cce5ff;">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                style="text-align: left; padding: 10px; color: #0056b3; font-weight: 600; font-size: 13px;">
+                                                Domain / URL</th>
+                                            <th
+                                                style="text-align: center; padding: 10px; color: #0056b3; font-weight: 600; font-size: 13px;">
+                                                Total Keywords</th>
+                                            <th
+                                                style="text-align: center; padding: 10px; color: #0056b3; font-weight: 600; font-size: 13px;">
+                                                Status</th>
+                                            <th
+                                                style="text-align: center; padding: 10px; color: #0056b3; font-weight: 600; font-size: 13px;">
+                                                Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for task in tasks %}
+                                        <tr style="border-bottom: 1px solid #cce5ff;">
+                                            <td style="padding: 12px 10px;" data-label="Domain / URL">
+                                                <span style="font-weight: 500;" title="{{ task.target_domain }}">{{
+                                                    task.target_domain[:30] + '...' if task.target_domain|length > 30
+                                                    else
+                                                    task.target_domain }}</span>
+                                            </td>
+                                            <td style="padding: 12px 10px; text-align: center;"
+                                                data-label="Total Keywords">
+                                                {{ task.total_keywords }}
+                                            </td>
+                                            <td style="padding: 12px 10px; text-align: center;" data-label="Status">
+                                                {% if task.status == 'started' or task.status == 'started_real' %}
+                                                <span style="color: #007bff; font-weight: 500;">{{ task.display_status
+                                                    }}</span>
+                                                {% elif task.status == 'waiting_for_socket' %}
+                                                <span style="color: orange;">Initializing...</span>
+                                                {% else %}
+                                                {{ task.status }}
+                                                {% endif %}
+                                            </td>
+                                            <td style="padding: 12px 10px; display: flex; gap: 10px; justify-content: center; align-items: center;"
+                                                data-label="Actions">
+                                                <a href="/progress/{{ task.run_id }}" class="cmn-btn"
+                                                    style="padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; font-family: 'Lexend Deca', sans-serif; font-size: 13px; font-weight: 500; line-height: 20px; border-radius: 8px; background-color: #007bff; color: white; border: none; text-decoration: none;">View
+                                                    Progress</a>
+                                                <!-- Stop Task Button -->
+                                                <a href="javascript:void(0)"
+                                                    onclick="stopTask('{{ task.run_id }}', '{{ task.target_domain }}')"
+                                                    class="cmn-btn"
+                                                    style="padding: 0 10px; height: 36px; display: inline-flex; justify-content: center; align-items: center; font-family: 'Lexend Deca', sans-serif; font-size: 13px; font-weight: 500; line-height: 20px; border-radius: 8px; background-color: #ff4d4d; color: white; border: none; text-decoration: none;">Stop
+                                                    Project</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- Separator -->
+                        <div style="height: 20px;"></div>
+                        {% endif %}
+
+                        {% if not active_projects %}
+                        <div style="text-align: center; padding: 40px; color: #7a889a;">
+                            <img src="./images/projects-img.svg"
+                                style="width: 48px; opacity: 0.5; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;">
+                            <p>No active projects. Start a rank check to create one!</p>
+                            <a href="/rank-check" class="cmn-btn"
+                                style="display: inline-flex; justify-content: center; align-items: center; padding: 0 10px; height: 36px; margin-top: 20px; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 13px; line-height: 20px; font-family: 'Lexend Deca', sans-serif; background: #00b29d; color: #fff; border: none; cursor: pointer;">Create
+                                New Project</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div> <!-- End of projectsMainArea -->
+
+                <!-- NEW: Integrated Results View -->
+                <div id="resultsViewArea" style="display: none; padding-top: 10px;">
+
+                    <!-- Title Area (hidden but needed for JS) -->
+                    <div id="modalTitle" style="display: none;"></div>
+
+                    <!-- Results Display -->
+                    <div id="modalBody">
+                        <div class="loading-results">Loading results...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/owl.carousel.min.js"></script>
+        <script src="./js/common.js?v=4"></script>
+
+        <!-- Results Modal Removed and replaced by integrated view -->
+
+        <!-- Toggle Script -->
+        <script>
+            function toggleActiveProject(index) {
+                const content = document.getElementById(`content-active-${index}`);
+                const arrow = document.getElementById(`arrow-active-${index}`);
+                if (content.style.display === "none") {
+                    content.style.display = "block";
+                    arrow.style.transform = "rotate(180deg)";
+                } else {
+                    content.style.display = "none";
+                    arrow.style.transform = "rotate(0deg)";
+                }
+            }
+
+            function toggleProject(index) {
+                const content = document.getElementById(`content-${index}`);
+                const arrow = document.getElementById(`arrow-${index}`);
+                if (content.style.display === "none") {
+                    content.style.display = "block";
+                    arrow.style.transform = "rotate(180deg)";
+                } else {
+                    content.style.display = "none";
+                    arrow.style.transform = "rotate(0deg)";
+                }
+            }
+
+            function deleteProjectGroup(projectName, targetDomain) {
+                showConfirm(
+                    "Delete Project History?",
+                    `Are you sure you want to delete all history for ${targetDomain} in this project? This cannot be undone.`,
+                    function () {
+                        fetch('/api/delete-project-group', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ project_name: projectName, target_domain: targetDomain })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    location.reload();
+                                } else {
+                                    showAlert("Error", data.error);
+                                }
+                            })
+                            .catch(err => showAlert("Network Error", "Failed to delete project group."));
+                    }
+                );
+            }
+
+            let pendingStopRunId = null;
+            let pendingStopDomain = null;
+
+            function stopTask(runId, domain) {
+                pendingStopRunId = runId;
+                pendingStopDomain = domain;
+
+                const modal = document.getElementById('stopTaskModal');
+                const msg = document.getElementById('stopTaskMessage');
+                msg.innerText = `Are you sure you want to STOP the ranking check for ${domain}?`;
+                modal.style.display = 'flex';
+            }
+
+            function closeStopTaskModal() {
+                document.getElementById('stopTaskModal').style.display = 'none';
+                pendingStopRunId = null;
+                pendingStopDomain = null;
+            }
+
+            function confirmStopTask() {
+                if (!pendingStopRunId) return;
+
+                const modal = document.getElementById('stopTaskModal');
+                const submitBtn = document.getElementById('stopTaskConfirmBtn');
+                const originalText = submitBtn.innerText;
+
+                submitBtn.innerText = "Stopping...";
+                submitBtn.disabled = true;
+
+                fetch('/api/cancel-task', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ run_id: pendingStopRunId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success || !data.error) {
+                            location.reload();
+                        } else {
+                            showAlert("Stop Task Error", data.error);
+                            closeStopTaskModal();
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        showAlert("Server Error", "Failed to communicate with server.");
+                        closeStopTaskModal();
+                    })
+                    .finally(() => {
+                        submitBtn.innerText = originalText;
+                        submitBtn.disabled = false;
+                    });
+            }
+
+            function viewResults(runId, projectName) {
+                const listArea = document.getElementById('projectsMainArea');
+                const resultsArea = document.getElementById('resultsViewArea');
+                const body = document.getElementById('modalBody');
+                const title = document.getElementById('modalTitle');
+
+                // Toggle views
+                listArea.style.display = 'none';
+                resultsArea.style.display = 'block';
+
+                body.innerHTML = '<div class="loading-results">Loading results...</div>';
+
+                fetch(`/api/run-results/${runId}`)
+                    .then(async response => {
+                        if (!response.ok) {
+                            const text = await response.text();
+                            try {
+                                const json = JSON.parse(text);
+                                throw new Error(json.error || `HTTP ${response.status}`);
+                            } catch (e) {
+                                throw new Error(text || `HTTP ${response.status}`);
+                            }
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.error) {
+                            body.innerHTML = `<div class="loading-results" style="color: red;">Error: ${data.error}</div>`;
+                            return;
+                        }
+                        if (!data || data.length === 0) {
+                            body.innerHTML = '<div class="loading-results">No results found for this run.</div>';
+                            return;
+                        }
+
+                        let tableHtml = `
+                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 15px; padding-bottom: 25px; border-bottom: 1px solid #f0f0f0; margin-bottom: 20px;">
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 15px;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <span style="font-size: 24px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.5px;">${projectName}</span>
+                                    <span style="font-size: 14px; color: #00B29D; text-decoration: none; background: #e0f7f4; padding: 4px 10px; border-radius: 20px; font-weight: 500;">
+                                        ${data.meta?.domain || ''}
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <button onclick="closeResultsView()" style="font-size: 13px; color: #64748b; text-decoration: none; font-weight: 500; padding: 10px 15px; border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8f0; cursor: pointer;">Back to Projects</button>
+                            </div>
+                        </div>
+
+                        <table class="results-table" style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                            <thead>
+                                <tr style="background: #f9fafb; border-bottom: 2px solid #edf2f7;">
+                                    <th style="padding: 12px; text-align: left;">Keyword</th>
+                                    <th style="padding: 12px; text-align: left;">Rank</th>
+                                    <th style="padding: 12px; text-align: left;">Page</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+
+                        data.forEach(row => {
+                            tableHtml += `
+                            <tr style="border-bottom: 1px solid #edf2f7;">
+                                <td style="padding: 12px;">${row.keyword}</td>
+                                <td style="padding: 12px;">${row.rank || 'N/A'}</td>
+                                <td style="padding: 12px;">${row.page || 'N/A'}</td>
+                            </tr>
+                        `;
+                        });
+
+                        tableHtml += '</tbody></table>';
+                        body.innerHTML = tableHtml;
+                    })
+                    .catch(err => {
+                        body.innerHTML = `<div class="loading-results" style="color: red;">Failed to load results.</div>`;
+                        console.error(err);
+                    });
+            }
+
+            function closeResultsView() {
+                document.getElementById('projectsMainArea').style.display = 'block';
+                document.getElementById('resultsViewArea').style.display = 'none';
+            }
+
+            window.onclick = function (event) {
+                if (event.target == document.getElementById('resultsModalOverlay')) {
+                    closeResultsModal();
+                }
+            }
+                < script >
+                document.getElementById('projectSearchInput').addEventListener('input', function (e) {
+                    const filter = e.target.value.toLowerCase().trim();
+                    const folders = document.querySelectorAll('.project-folder');
+
+                    folders.forEach(folder => {
+                        const header = folder.querySelector('.project-header');
+                        const content = folder.querySelector('.project-content');
+                        // Get project name safely
+                        const pNameEl = header.querySelector('h3');
+                        const projectName = pNameEl ? pNameEl.innerText.toLowerCase() : "";
+
+                        const rows = content.querySelectorAll('tbody tr');
+                        let hasVisibleRow = false;
+
+                        const projectMatches = projectName.includes(filter);
+
+                        rows.forEach(row => {
+                            const domainEl = row.querySelector('td[data-label="Domain / URL"] span');
+                            const domain = domainEl ? domainEl.innerText.toLowerCase() : "";
+
+                            if (filter === "" || projectMatches || domain.includes(filter)) {
+                                row.style.display = '';
+                                // If specific row search (and not just clearing), mark visible
+                                if (filter !== "") hasVisibleRow = true;
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+
+                        if (filter === "") {
+                            // Reset to default state (maybe all folders visible, collapsed? or leave as is)
+                            // Let's leave content expansion as is, just ensure folder is visible
+                            folder.style.display = '';
+                        } else {
+                            if (projectMatches) {
+                                folder.style.display = '';
+                                // Show all rows
+                                rows.forEach(r => r.style.display = '');
+                            } else if (hasVisibleRow) {
+                                folder.style.display = '';
+                                // Expand if hidden
+                                if (content.style.display === "none") {
+                                    content.style.display = "block";
+                                    const arrow = header.querySelector('img[id^="arrow-active-"]');
+                                    if (arrow) arrow.style.transform = "rotate(180deg)";
+                                }
+                            } else {
+                                folder.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+        </script>
+
+        <!-- Logout Modal -->
+        <div id="logoutModal" class="logout-overlay">
+            <div class="logout-modal">
+                <h2>Are you sure you want to log out?</h2>
+                <p>You'll be signed out from your current session.</p>
+
+                <div class="logout-actions">
+                    <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                    <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stop Task Modal -->
+        <div id="stopTaskModal" class="logout-overlay" style="display: none;">
+            <div class="logout-modal">
+                <h2>Stop Ranking Check?</h2>
+                <p id="stopTaskMessage">Are you sure you want to STOP the ranking check?</p>
+
+                <div class="logout-actions">
+                    <button class="btn-cancel" onclick="closeStopTaskModal()">Cancel</button>
+                    <button class="btn-logout" id="stopTaskConfirmBtn" onclick="confirmStopTask()">Stop Project</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/common.js?v=4"></script>
+        <script src="./js/logout.js"></script>
+
+        <!-- Buy Credits Modal (Redesigned) -->
+        <div id="buyCreditsModal" class="logout-overlay"
+            style="display: none; z-index: 9999; align-items: flex-start; padding-top: 50px; overflow-y: auto;">
+            <div class="logout-modal" style="width: 700px; max-width: 95%;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">Upgrade Your Plan</h2>
+                    <button onclick="document.getElementById('buyCreditsModal').style.display='none'"
+                        style="background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
+                </div>
+
+                <!-- Tabs -->
+                <div style="display: flex; gap: 20px; border-bottom: 1px solid #eee; margin-bottom: 20px;">
+                    <div id="tabPayGo" onclick="switchTab('paygo')"
+                        style="padding: 10px 0; border-bottom: 2px solid #00b29d; color: #00b29d; font-weight: 600; cursor: pointer;">
+                        Pay As You Go</div>
+                    <div id="tabMonthly" onclick="switchTab('monthly')"
+                        style="padding: 10px 0; border-bottom: 2px solid transparent; color: #666; cursor: pointer;">
+                        Monthly
+                        Subscription</div>
+                </div>
+
+                <!-- Pay As You Go Content -->
+                <div id="contentPayGo" style="display: block;">
+                    <p style="color: #666; margin-bottom: 15px;">One-time purchase. Credits never expire.</p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                        <!-- Micro Pack -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Micro', 5)">
+                            <div style="font-weight: 700; font-size: 18px;">Micro</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">500 Credits</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$5</div>
+                            <div style="font-size: 12px; color: #999;">$0.01 / kw</div>
+                        </div>
+                        <!-- Starter Pack -->
+                        <div class="plan-card selected-plan" onclick="selectPlan(this, 'Starter', 15)">
+                            <div
+                                style="background: #00b29d; color: white; border-radius: 4px; padding: 2px 6px; font-size: 10px; position: absolute; top: 10px; right: 10px;">
+                                POPULAR</div>
+                            <div style="font-weight: 700; font-size: 18px;">Starter</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">2,500 Credits</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$15</div>
+                            <div style="font-size: 12px; color: #999;">$0.006 / kw</div>
+                        </div>
+                        <!-- Pro Pack -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Pro', 50)">
+                            <div style="font-weight: 700; font-size: 18px;">Pro</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">10,000 Credits</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$50</div>
+                            <div style="font-size: 12px; color: #999;">$0.005 / kw</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Content -->
+                <div id="contentMonthly" style="display: none;">
+                    <p style="color: #666; margin-bottom: 15px;">Auto-refill every month. Cancel anytime. Best value.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                        <!-- Freelancer -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Freelancer Monthly', 12)">
+                            <div style="font-weight: 700; font-size: 18px;">Freelancer</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">3,000 Credits/mo</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$12<span
+                                    style="font-size:12px; color:#666;">/mo</span></div>
+                            <div style="font-size: 12px; color: #999;">$0.004 / kw</div>
+                        </div>
+                        <!-- Agency -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Agency Monthly', 35)">
+                            <div style="font-weight: 700; font-size: 18px;">Agency</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">10,000 Credits/mo</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$35<span
+                                    style="font-size:12px; color:#666;">/mo</span></div>
+                            <div style="font-size: 12px; color: #999;">$0.0035 / kw</div>
+                        </div>
+                        <!-- Enterprise -->
+                        <div class="plan-card" onclick="selectPlan(this, 'Enterprise Monthly', 100)">
+                            <div style="font-weight: 700; font-size: 18px;">Big Biz</div>
+                            <div style="color: #666; font-size: 13px; margin: 5px 0;">35,000 Credits/mo</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #00b29d; margin: 10px 0;">$100<span
+                                    style="font-size:12px; color:#666;">/mo</span></div>
+                            <div style="font-size: 12px; color: #999;">$0.0028 / kw</div>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .plan-card {
+                        border: 1px solid #ddd;
+                        border-radius: 8px;
+                        padding: 20px;
+                        text-align: center;
+                        cursor: pointer;
+                        position: relative;
+                        transition: all 0.2s;
+                    }
+
+                    .plan-card:hover {
+                        border-color: #00b29d;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                    }
+
+                    .selected-plan {
+                        border: 2px solid #00b29d;
+                        background: #f0fdfb;
+                    }
+                </style>
+
+                <div
+                    style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 14px; color: #666;">
+                        Selected: <strong id="selectedPlanName">Starter</strong> - <span
+                            id="selectedPlanPrice">$15</span>
+                    </div>
+                    <div class="logout-actions" style="margin-top: 0;">
+                        <button class="btn-cancel"
+                            onclick="document.getElementById('buyCreditsModal').style.display='none'">Cancel</button>
+                        <button class="btn-logout" style="background: #007bff;" onclick="simulatePayment()">Proceed to
+                            Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Simulation Toast -->
+        <div id="paymentToast"
+            style="display:none; position: fixed; top: 20px; right: 20px; background: #fff; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border-left: 4px solid #00b29d; z-index: 10000; animation: slideIn 0.3s ease;">
+            <div style="font-weight: 600; margin-bottom: 5px;">Redirecting to Payment...</div>
+            <div style="font-size: 13px; color: #666;">Connecting to secure gateway.</div>
+        </div>
+
+        <script>
+            // Search Filter for Projects List
+            const projectSearchInput = document.getElementById('projectSearchInput');
+            if (projectSearchInput) {
+                projectSearchInput.addEventListener('input', function () {
+                    const filter = this.value.toLowerCase();
+                    const folders = document.querySelectorAll('.project-folder');
+
+                    folders.forEach(folder => {
+                        const title = folder.querySelector('h3').innerText.toLowerCase();
+                        // Also search in domains within the folder (using span title attribute for full domain)
+                        const domains = Array.from(folder.querySelectorAll('td span[title]')).map(span => span.getAttribute('title').toLowerCase());
+
+                        if (title.includes(filter) || domains.some(d => d.includes(filter))) {
+                            folder.style.display = 'block';
+                            // Auto-expand if domain matches
+                            if (domains.some(d => d.includes(filter)) && filter.length > 0) {
+                                const content = folder.querySelector('.project-content');
+                                const arrow = folder.querySelector('[id^="arrow-active-"]');
+                                if (content) content.style.display = 'block';
+                                if (arrow) arrow.style.transform = 'rotate(180deg)';
+                            }
+                        } else {
+                            folder.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            function openBuyCreditsModal() { document.getElementById('buyCreditsModal').style.display = 'flex'; }
+
+            function switchTab(tab) {
+                if (tab === 'paygo') {
+                    document.getElementById('tabPayGo').style.borderBottomColor = '#00b29d';
+                    document.getElementById('tabPayGo').style.color = '#00b29d';
+                    document.getElementById('tabMonthly').style.borderBottomColor = 'transparent';
+                    document.getElementById('tabMonthly').style.color = '#666';
+                    document.getElementById('contentPayGo').style.display = 'block';
+                    document.getElementById('contentMonthly').style.display = 'none';
+
+                    // Reset selection to default
+                    const defaultCard = document.querySelector('#contentPayGo .plan-card:nth-child(2)'); // Starter
+                    if (defaultCard) selectPlan(defaultCard, 'Starter', 15);
+                } else {
+                    document.getElementById('tabMonthly').style.borderBottomColor = '#00b29d';
+                    document.getElementById('tabMonthly').style.color = '#00b29d';
+                    document.getElementById('tabPayGo').style.borderBottomColor = 'transparent';
+                    document.getElementById('tabPayGo').style.color = '#666';
+                    document.getElementById('contentMonthly').style.display = 'block';
+                    document.getElementById('contentPayGo').style.display = 'none';
+
+                    // Reset selection to default
+                    const defaultCard = document.querySelector('#contentMonthly .plan-card:nth-child(1)'); // Freelancer
+                    if (defaultCard) selectPlan(defaultCard, 'Freelancer Monthly', 12);
+                }
+            }
+
+            function selectPlan(el, name, price) {
+                document.querySelectorAll('.plan-card').forEach(c => {
+                    c.classList.remove('selected-plan');
+                    c.style.borderWidth = '1px';
+                    c.style.background = 'white';
+                });
+                el.classList.add('selected-plan');
+                el.style.borderWidth = '2px';
+                el.style.background = '#f0fdfb';
+
+                document.getElementById('selectedPlanName').innerText = name;
+                document.getElementById('selectedPlanPrice').innerText = '$' + price;
+            }
+
+            function simulatePayment() {
+                const planName = document.getElementById('selectedPlanName').innerText;
+                const price = document.getElementById('selectedPlanPrice').innerText;
+
+                // Determine credit amount based on plan name
+                let credits = 0;
+                if (planName.includes('Micro')) credits = 500;
+                else if (planName.includes('Starter')) credits = 2500;
+                else if (planName.includes('Pro')) credits = 10000;
+                else if (planName.includes('Freelancer')) credits = 3000;
+                else if (planName.includes('Agency')) credits = 10000;
+                else if (planName.includes('Big Biz')) credits = 35000;
+
+                showConfirm(
+                    "Confirm Payment",
+                    "Proceed to Secure Payment Gateway for " + planName + "?",
+                    function () {
+                        const cleanPrice = price.replace('$', '').replace('/mo', '');
+                        window.location.href = `/payment?plan=${encodeURIComponent(planName)}&price=${cleanPrice}&credits=${credits}`;
+                    }
+                );
+            }
+        </script>
+        <!-- Logout Modal -->
+        <div id="logoutModal" class="logout-overlay">
+            <div class="logout-modal">
+                <h2>Are you sure you want to log out?</h2>
+                <p>You'll be signed out from your current session.</p>
+
+                <div class="logout-actions">
+                    <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                    <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="./js/logout.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Logout Confirmation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logout.css') }}">
+</head>
+
+<body>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="logout-overlay">
+        <div class="logout-modal">
+            <h2>Are you sure you want to log out?</h2>
+            <p>You’ll be signed out from your current session.</p>
+
+            <div class="logout-actions">
+                <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+                <button class="btn-logout" onclick="confirmLogout()">Yes, Log out</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+</body>
+
+</html>
