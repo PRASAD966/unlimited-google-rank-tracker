@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nice Digitals</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="Fav icon" href="./images/fav.webp">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<div class="dashboard">
+    <!-- SIDEBAR  -->
+    <div class="dashboard-menu">
+        <div class="dashboard-logo-blk">
+            <div class="dashboard-logo">
+                <a href="index.html">
+                    <img src="./images/nice-logo.webp" alt="nice-logo" width="69" height="60">
+                </a>
+            </div>
+            <div class="dashboard-toggle">
+                <img src="./images/toggle-img.webp" alt="" width="19" height="17">
+            </div>
+        </div>
+        <div class="dashboard-links">
+
+            <div class="dashboard-menu-cnt-blk active">
+                <div class="dashboard-cnt-img-blk"><img src="./images/dashboard-img.svg"></div>
+                <div class="dashboard-cnt-blk"><a href="dashboard.html">Dashboard</a></div>
+                <div class="dashboard-cnt-blk-hover"><a href="dashboard.html">Dashboard</a></div>
+            </div>
+
+            <div class="dashboard-menu-cnt-blk">
+                <div class="dashboard-cnt-img-blk"><img src="./images/rank-check-img.svg"></div>
+                <div class="dashboard-cnt-blk"><a href="#">Rank Check</a></div>
+            </div>
+
+            <div class="dashboard-menu-cnt-blk">
+                <div class="dashboard-cnt-img-blk"><img src="./images/projects-img.svg"></div>
+                <div class="dashboard-cnt-blk"><a href="projects.html">Projects</a></div>
+            </div>
+
+            <div class="dashboard-menu-cnt-blk">
+                <div class="dashboard-cnt-img-blk"><img src="./images/history-img.svg"></div>
+                <div class="dashboard-cnt-blk"><a href="history.html">History</a></div>
+            </div>
+
+            <div class="dashboard-menu-cnt-blk">
+                <div class="dashboard-cnt-img-blk"><img src="./images/comparison-img.svg"></div>
+                <div class="dashboard-cnt-blk"><a href="comparison.html">Comparison</a></div>
+            </div>
+
+            <div class="dashboard-menu-cnt-blk">
+                <div class="dashboard-cnt-img-blk"><img src="./images/settings-img.svg"></div>
+                <div class="dashboard-cnt-blk"><a href="settings.html">Settings</a></div>
+            </div>
+
+            <div class="dashboard-menu-cnt-blk">
+                <div class="dashboard-cnt-img-blk"><img src="./images/log-out-img.svg"></div>
+                <div class="dashboard-cnt-blk"><a href="#">Log out</a></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE CONTENT -->
+    <div class="dashboard-main-wrapper">
+
+        <!-- Top Header -->
+        <div class="dashboard-cnt">
+
+            <div class="dashboard-cnt-top-blk">
+                <input type="text" placeholder="Search a project...">
+            </div>
+
+            <div class="dashboard-credentials-blk">
+
+                <div class="dashboard-notificaton-blk">
+                    <img src="./images/bell.svg" alt="Notification">
+                </div>
+
+                <div class="dashboard-log-in-blk">
+                    <div class="dashboard-log-in-blk-img">
+                        j
+                    </div>
+                    <div class="dashboard-log-in-blk-cnt">John Doe</div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MAIN BODY -->
+        <div class="dashboard-main">
+            <h2 class="main-heading">Dashboard</h2>
+            <p class="sub-heading">Your latest keyword performance at a glance.</p>
+
+            <!-- Stats Row -->
+            <div class="dashboard-rank-row">
+                <div class="dashboard-rank-box">
+                    <p>Total Projects</p>
+                    <h2>15</h2>
+                    <span class="stats-note">Current active projects</span>
+                </div>
+                <div class="dashboard-rank-box">
+                    <p>Total Rank Checks</p>
+                    <h2>480</h2>
+                    <span class="stats-note">All checks performed till date</span>
+                </div>
+                <div class="dashboard-rank-box">
+                    <p>Keywords Monitored</p>
+                    <h2>4,500</h2>
+                    <span class="stats-note">Across all checks</span>
+                </div>
+                <div class="dashboard-rank-box">
+                    <p>Best Rank Achieved</p>
+                    <h2>#1</h2>
+                    <span class="stats-note">Highest-ranking keyword</span>
+                </div>
+            </div>
+            
+            <div class="table-top">
+                <p>Rank Check</p>
+                <button class="export-btn">Export</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/owl.carousel.min.js"></script>  
+<script src="./js/common.js"></script>
