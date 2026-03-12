@@ -1,0 +1,145 @@
+/* Logout Modal Styles */
+
+/* Overlay - covers entire screen */
+.logout-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.logout-overlay.active {
+    display: flex;
+}
+
+/* Modal Box */
+.logout-modal {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
+    max-width: 420px;
+    width: 90%;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Modal Title */
+.logout-modal h2 {
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1E1E1E;
+    margin: 0 0 12px;
+}
+
+/* Modal Description */
+.logout-modal p {
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #686868;
+    margin: 0 0 30px;
+    line-height: 1.5;
+}
+
+/* Button Container */
+.logout-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* Cancel Button */
+.btn-cancel {
+    font-family: 'Lexend Deca', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #4b5563;
+    background-color: #fff;
+    width: 156px;
+    height: 36px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #F9FAFB;
+    border-color: #D1D5DB;
+}
+
+/* Logout Button */
+.btn-logout {
+    font-family: 'Lexend Deca', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #fff;
+    background-color: #DC2626;
+    width: 156px;
+    height: 36px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #B91C1C;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    .logout-modal {
+        padding: 30px 20px;
+        max-width: 90%;
+    }
+
+    .logout-modal h2 {
+        font-size: 18px;
+    }
+
+    .logout-modal p {
+        font-size: 13px;
+    }
+
+    .logout-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-cancel,
+    .btn-logout {
+        width: 100%;
+        padding: 12px 20px;
+    }
+}
